@@ -19,10 +19,10 @@ using namespace edm;
 
 namespace flashgg {
 
-	class VBFMVAProducer : public EDProducer {
+	class PUPPIVBFMVAProducer : public EDProducer {
 
 		public:
-			VBFMVAProducer( const ParameterSet & );
+			PUPPIVBFMVAProducer( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 
@@ -44,7 +44,7 @@ namespace flashgg {
 
 	};
 
-	VBFMVAProducer::VBFMVAProducer(const ParameterSet & iConfig) :
+	PUPPIVBFMVAProducer::PUPPIVBFMVAProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("JetTag", InputTag("flashggJets"))))
 	{
@@ -92,7 +92,7 @@ namespace flashgg {
 
 	} 
 
-	void VBFMVAProducer::produce( Event & evt, const EventSetup & ) {
+	void PUPPIVBFMVAProducer::produce( Event & evt, const EventSetup & ) {
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons; 
 		evt.getByToken(diPhotonToken_,diPhotons); 
 		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector(); 
@@ -120,7 +120,7 @@ namespace flashgg {
 			std::pair <int,int> dijet_indices(-1,-1); 
 			std::pair <float, float> dijet_pts(-1.,-1.); 
 			//NOT NEEDED FOR PUPPI
-			float PuIDCutoff = 0.8;
+			//float PuIDCutoff = 0.8;
 			float dr2pho = 0.5;
 
 			float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
@@ -135,7 +135,7 @@ namespace flashgg {
 
 				//pass PU veto??	
 				//NOT NEEDED FOR PUPPI
-				if (jet->getPuJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
+				//if (jet->getPuJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
 				// within eta 4.7?
 				if (fabs(jet->eta()) > 4.7) continue;
 				// close to lead photon?
@@ -225,5 +225,5 @@ namespace flashgg {
 	}
 }
 
-typedef flashgg::VBFMVAProducer FlashggVBFMVAProducer;
-DEFINE_FWK_MODULE(FlashggVBFMVAProducer);
+typedef flashgg::PUPPIVBFMVAProducer FlashggPUPPIVBFMVAProducer;
+DEFINE_FWK_MODULE(FlashggPUPPIVBFMVAProducer);

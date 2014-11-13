@@ -95,7 +95,7 @@ namespace flashgg {
 
 				if (chosenIndex != -1 ) {
 					// chosenIndex should only be -1 if all candidates have sumPT exactly zero, in which case we are not interested and continue the loop
-					*SelectedTag.get() = TagPointers[0];	
+					*SelectedTag.get() = TagPointers[chosenIndex]; 
 					//debug message:
 					//std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " << maxSumPt <<std::endl;
 					break;
