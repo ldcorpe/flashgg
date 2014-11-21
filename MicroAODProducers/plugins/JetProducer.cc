@@ -47,6 +47,8 @@ namespace flashgg {
 		usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false)),
     //   useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
+		usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false))
+    //    useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
 
