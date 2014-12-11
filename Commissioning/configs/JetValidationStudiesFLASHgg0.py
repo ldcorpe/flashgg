@@ -1,4 +1,3 @@
-# bubu
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("FLASHggMicroAOD")
@@ -14,11 +13,10 @@ process.source = cms.Source("PoolSource",
                             #skipEvents=cms.untracked.uint32(13000)
                             )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 5000 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
-process.flashggVertexMapUnique.MaxAllowedDz = 0.2
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
@@ -79,10 +77,18 @@ process.selectedElectrons = cms.EDFilter("CandPtrSelector", src = cms.InputTag("
 					 0.5*pfIsolationVariables().sumPUPt))/pt < 0.15'''))
 
 #---------> BEGIN PFCHS 0 REPROCESSING <-------------------
+process.flashggCHS0thVertexCandidates = cms.EDProducer('FlashggCHSLegacyVertexCandidateProducer',
+                                                          PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                          DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                           								UseZeroth = cms.untracked.bool(True),
+                                                          VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
+                                                          )
 #select isolated  muons and electrons collections
 #tune the requirements to whatever ID and isolation you prefer 
 # first select the packedCandidates passing the loose "fromPV()" requirement (equivalent to CHS definition used for Jets in Run I)
-process.pfCHS0 = cms.EDFilter("CandPtrSelector", src = cms.InputTag("packedPFCandidates"), cut = cms.string("fromPV"))
+#process.pfCHS0 = cms.EDFilter("CandPtrSelector", src = cms.InputTag("packedPFCandidates"), cut = cms.string("fromPV"))
+process.pfCHS0 = cms.EDFilter("CandPtrSelector", src = cms.InputTag("flashggCHS0thVertexCandidates"), cut = cms.string(""))
 # then remove the previously selected muons
 process.pfNoMuonCHS0 =  cms.EDProducer("CandPtrProjector", src = cms.InputTag("pfCHS0"), veto = cms.InputTag("selectedMuons"))
 # then remove the previously selected electrons
@@ -209,8 +215,7 @@ puppiForward = cms.VPSet(
 #u----------------> PUPPI 0 < ---------------------
 process.puppi0 = cms.EDProducer("PuppiProducer",
                                 PuppiName      = cms.untracked.string("Puppi"),
-                                #UseDeltaZCut   = cms.untracked.bool  (True), #remvoing this cut
-                                UseDeltaZCut   = cms.untracked.bool  (False), #remvoing this cut
+                                UseDeltaZCut   = cms.untracked.bool  (True),
                                 DeltaZCut      = cms.untracked.double(0.2),
                                 #candName       = cms.untracked.string('particleFlow'),
                                 #vertexName     = cms.untracked.string('offlinePrimaryVertices'),
@@ -293,8 +298,7 @@ process.combinedSecondaryVertex.trackMultiplicityMin = 1  #needed for CMSSW < 71
 #u----------------> PUPPI Leg < ---------------------
 process.puppiLeg = cms.EDProducer("PuppiProducer",
                                   PuppiName      = cms.untracked.string("Puppi"),
-                                  #UseDeltaZCut   = cms.untracked.bool  (True), #Removing this cut, as it seems to have a bug.
-                                  UseDeltaZCut   = cms.untracked.bool  (False), 
+                                  UseDeltaZCut   = cms.untracked.bool  (True),
                                   DeltaZCut      = cms.untracked.double(0.2),
                                   #candName       = cms.untracked.string('particleFlow'),
                                   #vertexName     = cms.untracked.string('offlinePrimaryVertices'),
@@ -431,10 +435,9 @@ process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                           massCutLower=cms.untracked.double(100)
                                           )
 
-process.TFileService = cms.Service("TFileService",fileName  = cms.string("jetValidationCollection_PU40bx50_new.root"))
-#process.TFileService = cms.Service("TFileService",fileName = cms.string("jetValidationCollection_PU20bx25_new.root"))
+#process.TFileService = cms.Service("TFileService",fileName = cms.string("jetValidationCollection_PU40bx50.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("jetValidationCollection_PU20bx25.root"))
 #process.TFileService = cms.Service("TFileService",fileName = cms.string("Test.root"))
-
 process.flashggPFCollAnalyzer = cms.EDAnalyzer('FlashggFlashggPFCollAnalyzer',
                                                #VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                #GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
@@ -457,31 +460,31 @@ process.flashggPFCollAnalyzer = cms.EDAnalyzer('FlashggFlashggPFCollAnalyzer',
 process.flashggJetValidationTreeMaker = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
                                                        GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
                                                        JetTagDz                 = cms.InputTag("flashggJets"),
-                                                       StringTag		= cms.string("PF"),
+																											 StringTag								= cms.string("PF"),
                                                        )
 
 process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                             GenParticleTag     = cms.untracked.InputTag('prunedGenParticles'),
-                                                             JetTagDz           = cms.InputTag("flashggJetsPFCHS0"),
-                                                             StringTag		= cms.string("PFCHS0"),
-                                                             )
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPFCHS0"),
+																											 StringTag								= cms.string("PFCHS0"),
+                                                       )
 
 process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                               GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
-                                                               JetTagDz                 = cms.InputTag("flashggJetsPFCHSLeg"),
-                                                               StringTag		= cms.string("PFCHSLeg"),
-                                                               )
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPFCHSLeg"),
+																											 StringTag								= cms.string("PFCHSLeg"),
+                                                       )
 
 process.flashggJetValidationTreeMakerPUPPI0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                             GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
-                                                             JetTagDz                 = cms.InputTag("flashggJetsPUPPI0"),
-                                                             StringTag	       	      = cms.string("PUPPI0"),
-                                                             )
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPUPPI0"),
+																											 StringTag								= cms.string("PUPPI0"),
+                                                       )
 process.flashggJetValidationTreeMakerPUPPILeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                               GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
-                                                               JetTagDz                 = cms.InputTag("flashggJetsPUPPILeg"),
-                                                               StringTag		= cms.string("PUPPILeg"),
-                                                               )
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPUPPILeg"),
+																											 StringTag								= cms.string("PUPPILeg"),
+                                                       )
 #new PAT default running is "unscheduled" so we just need to say in the outputCommands what we want to store
 process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
@@ -497,7 +500,7 @@ process.p = cms.Path(
     #process.commissioning*
     )
 process.OUT = cms.OutputModule("PoolOutputModule",
-                               fileName = cms.untracked.string('test50.root'),
+                               fileName = cms.untracked.string('test25.root'),
                                outputCommands = cms.untracked.vstring(['drop *','keep patJets_patJetsAK4PFCHS_*_*','keep *_*_*_PAT' ,'keep flashgg*_*_*_*'])
                                )
 process.endpath= cms.EndPath(process.OUT)
