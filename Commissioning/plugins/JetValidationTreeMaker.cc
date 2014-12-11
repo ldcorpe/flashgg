@@ -280,7 +280,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
 	// fill genJet tree
 	//
-		std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
+		//std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
 	for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
 
 		genJetInfo.recoJetPt       = -999.;
