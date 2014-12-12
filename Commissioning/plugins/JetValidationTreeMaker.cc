@@ -394,25 +394,6 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 		genJetTree->Fill();
 	}
 
-      if (dr < 0.4 ) {
-
-	genJetInfo.dR      =  dr;
-	genJetInfo.recoJetPt       = jetsDzPointers[recoLoop]->pt() ;
-	genJetInfo.recoJetRawPt    = jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt()  ;
-
-	if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
-	  genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
-	} else{  
-	  genJetInfo.recoJetBestPt   = jetsDzPointers[recoLoop]->pt()  ;
-	}
-	genJetInfo.recoJetMatch    = 1 ;
-	break;
-
-      }
-    }
-
-    genJetTree->Fill();
-  }
   
   eventTree->Fill();
   event_number++;
