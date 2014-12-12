@@ -34,6 +34,7 @@ namespace flashgg {
 		 bool usePuppi;
 		 double minJetPt_; // GeV
     //    bool useAODOnlyPileupJetIdMethod_;
+    double minJetPt_; // GeV
   };
 
 
@@ -76,6 +77,7 @@ namespace flashgg {
 
     for (unsigned int i = 0 ; i < jetPointers.size() ; i++) {
       Ptr<pat::Jet> pjet = jetPointers[i];
+      if (pjet->pt() < minJetPt_) continue;
       flashgg::Jet fjet = flashgg::Jet(*pjet);
       for (unsigned int j = 0 ; j < diPhotonPointers.size() ; j++) {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
