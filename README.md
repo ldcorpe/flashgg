@@ -22,9 +22,16 @@ flashgg
  git clone -b flashgg https://github.com/ldcorpe/Dummy
  ```
 
-3. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
+3. Get weight counter from musella until it is integrated in the release
+  ```
+  git cms-addpkg CommonTools/UtilAlgos
+  git cms-addpkg DataFormats/Common
+  git cms-merge-topic musella:topic-weights-count
+  ```
 
-4. In CMSSW_7_2_2_patch2/src, do commands something like: 
+4. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
+
+5. In CMSSW_7_2_2_patch2/src, do commands something like: 
  ```
  cd $CMSSW_BASE/src
  git clone git@github.com:yourusername/flashgg.git flashgg
@@ -33,7 +40,7 @@ flashgg
  # see https://help.github.com/articles/fork-a-repo for more about this 
  ```
 
-5. Now build, a very basic workflow test:
+6. Now build, a very basic workflow test:
  ```
  cd $CMSSW_BASE/src
  scram b
