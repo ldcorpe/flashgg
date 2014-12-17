@@ -41,6 +41,8 @@ struct eventInfo {
   float genVertexZ;
   float zerothVertexZ;
   float diphotonVertexZ;
+	int legacyEqZeroth;
+	int nDiphotons;
   
   unsigned int nJet;
   unsigned int nPV;
@@ -81,6 +83,8 @@ struct GenJetInfo {
   int   recoJetMatch ;
   float recoJetEta   ;
   float dR   ;
+	int legacyEqZeroth;
+	int nDiphotons;
   
   void init(){
     pt  =-999;
@@ -97,6 +101,11 @@ struct jetInfo {
   float area;
   float eta;
   float phi;
+  float PUJetID_betaStar;
+  float PUJetID_rms;
+  int passesPUJetID;
+	int legacyEqZeroth;
+	int nDiphotons;
   
   int   npart_0 ;    // number of particles at pt>0
   int   npart_5 ;    // number of particles at pt>5
@@ -175,13 +184,14 @@ private:
   // Additional methods
   void initEventStructure();
   
-  //EDGetTokenT< View<reco::Vertex> > vertexToken_;
   //EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
   //EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
   
   EDGetTokenT< edm::View<reco::GenParticle> > genPartToken_;
   EDGetTokenT< edm::View<reco::GenJet> >      genJetToken_;
   EDGetTokenT< edm::View<flashgg::Jet> >      jetDzToken_;
+	EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
+  EDGetTokenT< View<reco::Vertex> > vertexToken_;
   
   TTree*     eventTree;
   TTree*     jetTree;
@@ -205,14 +215,18 @@ private:
   
   TH1F *h_genPt ;      
   TH1F *h_genEta ;     
-  TH1F *h_genPhi  ;    
+  TH1F *h_genPhi  ;   
+	bool usePUJetID;
   
 };
 
 JetValidationTreeMaker::JetValidationTreeMaker(const edm::ParameterSet& iConfig):
   genPartToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles")))),
   genJetToken_(consumes<View<reco::GenJet> >(iConfig.getUntrackedParameter<InputTag> ("GenJetTag", InputTag("slimmedGenJets")))),
-  jetDzToken_ (consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz")))
+  jetDzToken_ (consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
+diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
+vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
+usePUJetID(iConfig.getUntrackedParameter<bool>("UsePUJetID",false))
 {
   event_number = 0;
   jetCollectionName = iConfig.getParameter<string>("StringTag");
@@ -226,6 +240,9 @@ JetValidationTreeMaker::~JetValidationTreeMaker()
 void
 JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
+
+
+
   
   
   //Handle<VertexCandidateMap> vertexCandidateMapDz;
@@ -234,9 +251,13 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   //Handle<VertexCandidateMap> vertexCandidateMapAOD;
   //iEvent.getByToken(vertexCandidateMapTokenAOD_,vertexCandidateMapAOD);
   //
-  //Handle<View<reco::Vertex> > primaryVertices;
-  //iEvent.getByToken(vertexToken_,primaryVertices);
-  //const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
+  Handle<View<reco::Vertex> > primaryVertices;
+  iEvent.getByToken(vertexToken_,primaryVertices);
+  const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
+
+	Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+	iEvent.getByToken(diPhotonToken_,diPhotons);
+	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
   
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken(genPartToken_,genParticles);
@@ -250,7 +271,22 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   iEvent.getByToken(jetDzToken_,jetsDz);
   const PtrVector<flashgg::Jet>& jetsDzPointers = jetsDz->ptrVector();
   
-  initEventStructure();
+	int legacyEqZeroth =0;
+	int nDiphotons =0;
+
+	nDiphotons = diPhotonPointers.size();
+	if(diPhotonPointers.size()==0){
+		legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
+	} else {
+		if(fabs(diPhotonPointers[0]->getVertex()->z() - vtxs[0]->z())<0.01){
+			legacyEqZeroth =1;
+		}
+	}
+
+eInfo.nDiphotons = nDiphotons;
+eInfo.legacyEqZeroth = legacyEqZeroth;
+  
+	initEventStructure();
   
   //std::cout << " Event Number : " <<  event_number << std::endl;
   
@@ -368,6 +404,19 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     jInfo.eta              = jetsDzPointers[jdz]->eta();
     jInfo.phi              = jetsDzPointers[jdz]->phi();
     jInfo.area             = jetsDzPointers[jdz]->jetArea();
+//		if((jetCollectionName.find("Leg")>1 && jetCollectionName.find("Leg")<jetCollectionName.size())
+	//		|| jetCollectionName.length() <3 )// for PF
+			{
+		jInfo.PUJetID_betaStar             = jetsDzPointers[jdz]->betaStar(diPhotonPointers[0]->getVertex());
+		jInfo.PUJetID_rms             = jetsDzPointers[jdz]->RMS(diPhotonPointers[0]->getVertex());
+		jInfo.passesPUJetID             = jetsDzPointers[jdz]->passesPuJetId(diPhotonPointers[0]->getVertex());
+//		} else {
+//		jInfo.PUJetID_betaStar             = jetsDzPointers[jdz]->betaStar(vtxs[0]);
+//		jInfo.PUJetID_rms             = jetsDzPointers[jdz]->RMS(vtxs[0]);
+//		jInfo.passesPUJetID             = jetsDzPointers[jdz]->passesPuJetId(vtxs[0]);
+		}
+		jInfo.nDiphotons             = nDiphotons;
+		jInfo.legacyEqZeroth             = legacyEqZeroth;
     // Get constituants information
     jInfo.npart_0  = 0; //
     jInfo.npart_5  = 0; //
@@ -419,6 +468,23 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     //
     jetTree->Fill();
   }
+	// std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
+	/*for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+
+		genInfo.pt     = gens[genLoop]->pt() ;
+		genInfo.eta    = gens[genLoop]->eta();
+		genInfo.phi    = gens[genLoop]->phi();
+		genInfo.status = gens[genLoop]->status();
+		genInfo.pdgid  = int(gens[genLoop]->pdgId());
+
+		// takes only the light quarks pid < 6
+		if ( fabs(gens[genLoop]->pdgId()) < 6 ){
+			h_genPt ->Fill(gens[genLoop]->pt() );	
+			h_genEta->Fill(gens[genLoop]->eta());	
+			h_genPhi->Fill(gens[genLoop]->phi());	
+		}
+		genPartTree->Fill();
+	}*/
   
   // fill genJet tree
   //
@@ -478,6 +544,9 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   event_number++;
 }
 
+	eventTree->Fill();
+	event_number++;
+	}
 
 void 
 JetValidationTreeMaker::beginJob()
@@ -496,7 +565,8 @@ JetValidationTreeMaker::beginJob()
   std::string type("eventTree_");
   type += jetCollectionName;
   eventTree = fs_->make<TTree>(type.c_str(),jetCollectionName.c_str());
-  eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
+  //eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
+	eventTree->Branch("eventBranch",&eInfo.legacyEqZeroth,"legacyEqZeroth/I:nDiphotons/I");
   
   std::string typeJet("jetTree_");
   typeJet += jetCollectionName;
@@ -562,24 +632,24 @@ JetValidationTreeMaker::beginJob()
   genJetTree->Branch("dR"               ,&genJetInfo.dR             ,"dR/F" );
 }
 
-void JetValidationTreeMaker::endJob() 
-{
+	void JetValidationTreeMaker::endJob() 
+	{
 
-}
+	}
 
-void JetValidationTreeMaker::initEventStructure() 
-{
-  
-}
+	void JetValidationTreeMaker::initEventStructure() 
+	{
+
+	}
 
 
-void JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  // The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
-}
+	void JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+		// The following says we do not know what parameters are allowed so do no validation
+		// Please change this to state exactly what you do use, even if it is no parameters
+		edm::ParameterSetDescription desc;
+		desc.setUnknown();
+		descriptions.addDefault(desc);
+	}
 
-typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
-DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
+	typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
+	DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
