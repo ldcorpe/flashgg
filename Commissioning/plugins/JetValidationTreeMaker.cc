@@ -242,7 +242,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 {
 
 
-
+std::cout <<" DEBUG 0"<<std::endl;
   
   
   //Handle<VertexCandidateMap> vertexCandidateMapDz;
@@ -274,6 +274,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	int legacyEqZeroth =0;
 	int nDiphotons =0;
 
+std::cout <<" DEBUG 1"<<std::endl;
 	nDiphotons = diPhotonPointers.size();
 	if(diPhotonPointers.size()==0){
 		legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
@@ -292,6 +293,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
   
   std::map<unsigned int, GenPhotonInfo> photonJet_id;
   
+std::cout <<" DEBUG 2"<<std::endl;
   for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
     genInfo.pt     = gens[genLoop]->pt() ;
     genInfo.eta    = gens[genLoop]->eta();
@@ -344,10 +346,14 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     genPartTree->Fill();
   }
   
+std::cout <<" DEBUG 3"<<std::endl;
   //std::cout << "number of matched photon == " << photonJet_id.size() << std::endl;
   
+std::cout <<" DEBUG 4"<<std::endl;
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
     
+std::cout <<" DEBUG 4a"<<std::endl;
+    jInfo.photondRmin = 999.;
     if( photonJet_id.find(jdz) != photonJet_id.end()){
       GenPhotonInfo tmp_info = photonJet_id.find(jdz)->second; // call find ones 
       jInfo.photondRmin  = tmp_info.DRmin;
@@ -365,7 +371,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     }
     
     //if(jInfo.photonMatch == 1) std::cout << "pt == " <<  jInfo.GenPhotonPt << "\t match==" << jInfo.photonMatch <<std::endl;
-    
+std::cout <<" DEBUG 4b"<<std::endl;
     jInfo.pt            = jetsDzPointers[jdz]->pt();
     jInfo.rawPt         = jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() ;
     
@@ -375,6 +381,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
       jInfo.bestPt      = jetsDzPointers[jdz]->pt() ;
     }
     
+std::cout <<" DEBUG 4c"<<std::endl;
     if( jetsDzPointers[jdz]->genJet()){
       jInfo.genJetMatch           = 1;
       jInfo.genJetPt              = jetsDzPointers[jdz]->genJet()->pt();
@@ -399,6 +406,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
       jInfo.genQuarkPdgId           = -9999;
     }
     //----------------------
+std::cout <<" DEBUG 4d"<<std::endl;
     jInfo.energy           = jetsDzPointers[jdz]->energy() ;
     jInfo.mass             = jetsDzPointers[jdz]->mass() ;
     jInfo.eta              = jetsDzPointers[jdz]->eta();
@@ -406,6 +414,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     jInfo.area             = jetsDzPointers[jdz]->jetArea();
 //		if((jetCollectionName.find("Leg")>1 && jetCollectionName.find("Leg")<jetCollectionName.size())
 	//		|| jetCollectionName.length() <3 )// for PF
+	if(diPhotonPointers.size() && !(jetCollectionName.find("UP")>1 && jetCollectionName.find("UP")<jetCollectionName.size()) )
 			{
 		jInfo.PUJetID_betaStar             = jetsDzPointers[jdz]->betaStar(diPhotonPointers[0]->getVertex());
 		jInfo.PUJetID_rms             = jetsDzPointers[jdz]->RMS(diPhotonPointers[0]->getVertex());
@@ -414,6 +423,12 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
 //		jInfo.PUJetID_betaStar             = jetsDzPointers[jdz]->betaStar(vtxs[0]);
 //		jInfo.PUJetID_rms             = jetsDzPointers[jdz]->RMS(vtxs[0]);
 //		jInfo.passesPUJetID             = jetsDzPointers[jdz]->passesPuJetId(vtxs[0]);
+		}
+		else {
+
+		jInfo.PUJetID_betaStar             = -1;
+		jInfo.PUJetID_rms             = -1;
+		jInfo.passesPUJetID             = -1;
 		}
 		jInfo.nDiphotons             = nDiphotons;
 		jInfo.legacyEqZeroth             = legacyEqZeroth;
@@ -434,6 +449,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     jInfo.nphoton_20 = 0; //
     // loop over consitutuants
     
+std::cout <<" DEBUG 5"<<std::endl;
     for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->getJetConstituentsQuick().size() ; i++){
       //1edm::Ptr<pat::PackedCandidate> icand = edm::Ptr<pat::PackedCandidate> ( jetsDzPointers[jdz]->daughterPtr(i) );
       const reco::Candidate* icand = jetsDzPointers[jdz]->getJetConstituentsQuick()[i];
@@ -489,6 +505,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
   // fill genJet tree
   //
   //std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
+std::cout <<" DEBUG 6"<<std::endl;
   for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
     
     genJetInfo.recoJetPt       = -999.;
@@ -512,6 +529,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     float dphi;
     float dr  ;
     //loop over reco to do dR match
+std::cout <<" DEBUG 7"<<std::endl;
     for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
 
       if(jetsDzPointers[recoLoop]->pt() < 5) continue;
@@ -543,10 +561,6 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
   eventTree->Fill();
   event_number++;
 }
-
-	eventTree->Fill();
-	event_number++;
-	}
 
 void 
 JetValidationTreeMaker::beginJob()
