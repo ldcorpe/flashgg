@@ -85,7 +85,6 @@ namespace flashgg {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
 	Ptr<reco::Vertex> vtx = diPhoton->getVertex();
 
-	// Method written just for MiniAOD --> MicroAOD
 	if(!usePuppi){
 	if (!fjet.hasPuJetId(vtx)) {
 	  // Method written just for MiniAOD --> MicroAOD
