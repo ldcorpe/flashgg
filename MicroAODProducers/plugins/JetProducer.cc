@@ -34,7 +34,6 @@ namespace flashgg {
 		 bool usePuppi;
 		 double minJetPt_; // GeV
     //    bool useAODOnlyPileupJetIdMethod_;
-    double minJetPt_; // GeV
   };
 
 
@@ -45,10 +44,8 @@ namespace flashgg {
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
 		usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false)),
-    //   useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
 		usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false))
-    //    useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
 
