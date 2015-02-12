@@ -1,0 +1,7 @@
+{    
+    "processes" : {
+        "vbf_m125" : [ "VBF_HToGG_M-125_13TeV-powheg-pythia6" ]
+        },
+
+    "cmdLine" : "campaign=VBFMVATrainingJan15"
+}
