@@ -35,31 +35,63 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = tagDefaultOutputCommand			       
                                )
 
-from flashgg.TagAlgos.VBFMVATrainingDumpConf_cff import VBFMVATrainingDumpConf
 import flashgg.TagAlgos.dumperConfigTools as cfgTools
 
-process.analyzer = VBFMVATrainingDumpConf
-process.analyzer.dumpTrees = True
-process.analyzer.dumpWorkspace = False
-process.analyzer.quietRooFit = True
-#cfgTools.addCategory(process.analyzer,
-#                     "Reject", ## cuts are applied in cascade
-#                      "abs(leadingPhoton.superCluster.eta)>=1.4442&&abs(leadingPhoton.superCluster.eta)<=1.566||abs(leadingPhoton.superCluster.eta)>=2.5"
-#                      "||abs(subLeadingPhoton.superCluster.eta)>=1.4442 && abs(subLeadingPhoton.superCluster.eta)<=1.566||abs(subLeadingPhoton.superCluster.eta)>=2.5",
-#                      -1)
-cfgTools.addCategories(process.analyzer,
-                       [## cuts are applied in cascade
-                        ("All","1",0),
-                        ],
-                       variables=["jet1pt:=dijet_LeadJPt", 
-                                  "jet2pt:=dijet_LeadJPt",
-                                  ],
-                       histograms=[
-                                   
-                                   
-                                   
-                                   ]
-                       )
+process.load("flashgg/TagProducers/VBFMVADumper_cff")
+
+process.TFileService = cms.Service("TFileService",
+      fileName = cms.string("histo.root"),
+			      closeFileFast = cms.untracked.bool(True)
+						  )
+
+#process.VBFMVADumper = VBFMVATrainingDumpConf.clone()
+process.VBFMVADumper.dumpTrees = True
+
+process.VBFMVADumper.dumpWorkspace = False
+
+process.VBFMVADumper.quietRooFit = True
+#cfgTools.addCategory(process.VBFMVADumper,
+#		"Reject", ## cuts are applied in cascade
+#		"VBFMVAValue<-1",
+#		-1)
+cfgTools.addCategories(process.VBFMVADumper,
+		[## cuts are applied in cascade
+		("All","1",0),
+		],
+		variables=[
+		"dijet_abs_dEta   :=  dijet_abs_dEta  ",
+		"dijet_leadEta    :=  dijet_leadEta  ",
+		"dijet_subleadEta :=  dijet_subleadEta  ",
+		"dijet_LeadJPt    :=  dijet_LeadJPt    ",
+		"dijet_SubJPt     :=  dijet_SubJPt     ",
+		"dijet_Zep        :=  dijet_Zep        ",
+		"dijet_Mjj        :=  dijet_Mjj        ",
+		"dipho_PToM       :=  dipho_PToM     ",
+		"leadPho_PToM     :=  leadPho_PToM     ",
+		"sublPho_PToM     :=  sublPho_PToM     ",
+		"dijet_dPhi_trunc :=  dijet_dPhi_trunc ",
+		],
+		histograms=[
+		"mvaresult>>VBFMVAValue(100,-1,1)",
+		]
+		)
+# split tree, histogram and datasets by process
+process.VBFMVADumper.nameTemplate ="$PROCESS_$SQRTS_$LABEL_$SUBCAT"
+## do not split by process
+## process.diphotonDumper.nameTemplate = "minitree_$SQRTS_$LABEL_$SUBCAT"
+
+## define categories and associated objects to dump
+#cfgTools.addCategory(process.diphotonDumper,
+#		"Reject",
+		# "abs(leadingPhoton.superCluster.eta)>=1.4442&&abs(leadingPhoton.superCluster.eta)<=1.566||abs(leadingPhoton.superCluster.eta)>=2.5"
+		# "||abs(subLeadingPhoton.superCluster.eta)>=1.4442 && abs(subLeadingPhoton.superCluster.eta)<=1.566||abs(subLeadingPhoton.superCluster.eta)>=2.5",
+#		"0",
+#		-1 ## if nSubcat is -1 do not store anythings
+#		)
+
+# interestng categories
+
+
 
 
 # customization for job splitting, lumi weighting, etc.
@@ -68,7 +100,7 @@ customize.setDefault("maxEvents",500)
 customize.setDefault("targetLumi",1.e+4)
 customize(process)
 process.p = cms.Path(process.flashggTagSequence*
-										 process.analyzer
-										)
+			process.VBFMVADumper
+			)
 
 process.e = cms.EndPath(process.out)

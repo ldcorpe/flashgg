@@ -1,7 +1,7 @@
 #ifndef flashgg_VBFMVAResultDumpers_h
 #define flashgg_VBFMVAResultDumpers_h
 
-#include "flashgg/MicroAODFormats/interface/VBFMVAResult.h"
+#include "flashgg/TagFormats/interface/VBFMVAResult.h"
 
 #include "flashgg/TagAlgos/interface/CollectionDumper.h"
 
@@ -10,6 +10,9 @@
 namespace flashgg 
 { 
 	typedef CollectionDumper<std::vector<VBFMVAResult> > VBFMVAResultDumper;
+	typedef CollectionDumper<std::vector<VBFMVAResult> ,
+					VBFMVAResult,
+					CutBasedClassifier<VBFMVAResult> > CutBasedVBFMVAResultDumper;
 
 	//// namespace fwlite {
 	//// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;
