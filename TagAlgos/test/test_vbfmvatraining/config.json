@@ -1,0 +1,21 @@
+{
+    "queue": null, 
+    "processes": {
+        "vbf_m125": [
+            "VBF_HToGG_M-125_13TeV-powheg-pythia6"
+        ]
+    }, 
+    "verbose": false, 
+    "__opts__": null, 
+    "dry_run": false, 
+    "hadd_dataset": false, 
+    "jobExe": "cmsRun", 
+    "hadd": false, 
+    "ncpu": 8, 
+    "cmdLine": "cmsRun VBFMVATag_Training.py maxEvents=100 campaign=VBFMVATrainingJan15 processIdMap=test_vbfmvatraining/config.json", 
+    "__opts___src": "VBFMVATrainingSamples.json", 
+    "hadd_process": false, 
+    "output": "output.root", 
+    "njobs": 0, 
+    "outputDir": "test_vbfmvatraining"
+}

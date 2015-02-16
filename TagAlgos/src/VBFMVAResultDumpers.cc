@@ -1,4 +1,4 @@
-#include "flashgg/TagAlgos/interface/VBFMVAResultDumpers.h"
+#include "flashgg/TagAlgos/interface/VBFMVAResultDumper.h"
 
 #include "flashgg/TagAlgos/interface/PluggableAnalyzer.h"
 
