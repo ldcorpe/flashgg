@@ -5,21 +5,12 @@
 
 #include "flashgg/TagAlgos/interface/CollectionDumper.h"
 
-/// #include "PhysicsTools/UtilAlgos/interface/FWLiteAnalyzerWrapper.h"
-
 namespace flashgg 
 { 
 	typedef CollectionDumper<std::vector<VBFMVAResult> > VBFMVAResultDumper;
 	typedef CollectionDumper<std::vector<VBFMVAResult> ,
 					VBFMVAResult,
 					CutBasedClassifier<VBFMVAResult> > CutBasedVBFMVAResultDumper;
-
-	//// namespace fwlite {
-	//// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;
-	//// 	typedef ::fwlite::AnalyzerWrapper<PhotonDumper> PhotonDumper;
-	//// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonTagDumper> DiPhotonTagDumper;
-	//// }
-	
 }
 
-#endif // flashgg_PhotonDumpers_h
+#endif 
