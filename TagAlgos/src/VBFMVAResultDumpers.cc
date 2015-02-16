@@ -6,5 +6,6 @@ namespace flashgg {
 	
 	namespace fwlite {
 		PLUGGABLE_ANALYZER(VBFMVAResultDumper);
+		PLUGGABLE_ANALYZER(CutBasedVBFMVAResultDumper);
 	}
 }
