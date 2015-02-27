@@ -20,13 +20,43 @@ process.out = cms.OutputModule("PoolOutputModule",
                                fileName = cms.untracked.string('myTagOutputFile.root'),
                                outputCommands = tagDefaultOutputCommand			       
                                )
-
-import flashgg.TagAlgos.dumperConfigTools as cfgTools
-process.load("flashgg/TagProducers/VBFMVADumper_cff")
 process.TFileService = cms.Service("TFileService",
       fileName = cms.string("histo.root"),
 			      closeFileFast = cms.untracked.bool(True)
 						  )
+
+import flashgg.TagAlgos.dumperConfigTools as cfgTools
+process.load("flashgg/TagProducers/VBFMVADumperNew_cff")
+process.VBFMVADumperNew.dumpTrees = True
+process.VBFMVADumperNew.dumpWorkspace = False
+process.VBFMVADumperNew.quietRooFit = True
+
+cfgTools.addCategories(process.VBFMVADumperNew,
+		[## cuts are applied in cascade
+		("AllNew","1",0),
+		],
+		variables=[
+		"dijet_abs_dEta   :=  dijet_abs_dEta  ",
+		"dijet_leadEta    :=  dijet_leadEta  ",
+		"dijet_subleadEta :=  dijet_subleadEta  ",
+		"dijet_LeadJPt    :=  dijet_LeadJPt    ",
+		"dijet_SubJPt     :=  dijet_SubJPt     ",
+		"dijet_Zep        :=  dijet_Zep        ",
+		"dijet_Mjj        :=  dijet_Mjj        ",
+		"dipho_PToM       :=  dipho_PToM     ",
+		"leadPho_PToM     :=  leadPho_PToM     ",
+		"sublPho_PToM     :=  sublPho_PToM     ",
+		"dijet_dPhi_trunc :=  dijet_dPhi_trunc ",
+		"VBFMVAValue :=  VBFMVAValue ",
+		],
+		histograms=[
+		"VBFMVAValue>>VBFMVAValue(100,-1,1)",
+		]
+		)
+# split tree, histogram and datasets by process
+process.VBFMVADumperNew.nameTemplate ="$PROCESS_$SQRTS_$LABEL_$SUBCAT"
+
+process.load("flashgg/TagProducers/VBFMVADumper_cff")
 process.VBFMVADumper.dumpTrees = True
 process.VBFMVADumper.dumpWorkspace = False
 process.VBFMVADumper.quietRooFit = True
@@ -47,9 +77,10 @@ cfgTools.addCategories(process.VBFMVADumper,
 		"leadPho_PToM     :=  leadPho_PToM     ",
 		"sublPho_PToM     :=  sublPho_PToM     ",
 		"dijet_dPhi_trunc :=  dijet_dPhi_trunc ",
+		"VBFMVAValue :=  VBFMVAValue ",
 		],
 		histograms=[
-		"mvaresult>>VBFMVAValue(100,-1,1)",
+		"VBFMVAValue>>VBFMVAValue(100,-1,1)",
 		]
 		)
 # split tree, histogram and datasets by process
@@ -62,7 +93,8 @@ customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",1.e+4)
 customize(process)
 process.p = cms.Path(process.flashggTagSequence*
-			process.VBFMVADumper
+			process.VBFMVADumper*
+			process.VBFMVADumperNew
 			)
 
 process.e = cms.EndPath(process.out)
