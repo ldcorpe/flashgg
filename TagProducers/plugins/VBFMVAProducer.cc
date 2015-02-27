@@ -196,7 +196,7 @@ namespace flashgg {
 
 				auto diphoton_p4 =leadPho_p4 + sublPho_p4;
 				auto dijet_p4 = leadJet_p4 + sublJet_p4;
-				float dijet_dPhi_ = deltaPhi(dijet_p4.Phi(),diphoton_p4.Phi());
+				float dijet_dPhi_ = (deltaPhi(dijet_p4.Phi(),diphoton_p4.Phi()));
 
 				dijet_dPhi_trunc_ = std::min(dijet_dPhi_, (float) 2.916);
 
@@ -216,7 +216,6 @@ namespace flashgg {
 				//debug stuff
 				//std::cout << mvares.leadJet.eta() << std::endl;
 				//std::cout << mvares.subleadJet.eta() << std::endl;
-
 
 			}
 			mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA("BDT");

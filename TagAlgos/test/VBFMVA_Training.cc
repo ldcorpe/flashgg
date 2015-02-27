@@ -158,8 +158,8 @@ factory->PrepareTrainingAndTestTree( mycuts, mycutb,
 // Boosted Decision Trees: use BDTG ( Gradient Boost )
 factory->BookMethod( TMVA::Types::kBDT, "BDTG",
 		"!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.30:UseBaggedGrad:GradBaggingFraction=0.6:SeparationType=GiniIndex:nCuts=20:NNodesMax=5:MaxDepth=3" );
-factory->BookMethod( TMVA::Types::kBDT, "BDT",
-		"!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
+//factory->BookMethod( TMVA::Types::kBDT, "BDT",
+//		"!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
 //"!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.30:UseBaggedGrad:GradBaggingFraction=0.6:SeparationType=GiniIndex:nCuts=20:NNodesMax=15:MaxDepth=5" );
 // book Cuts
 //factory->BookMethod( TMVA::Types::kCuts, "CutsGA",

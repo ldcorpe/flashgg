@@ -55,7 +55,7 @@ namespace flashgg {
 		vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vbfMVAweightfile");
 
 		dijet_leadEta_ = -999.; 
-  	dijet_subleadEta_ = -999.;
+		dijet_subleadEta_ = -999.;
 		dijet_abs_dEta_ =-999.;
 		dijet_LeadJPt_ = -999.;
 		dijet_SubJPt_ = -999.;
@@ -63,15 +63,15 @@ namespace flashgg {
 		dijet_dPhi_trunc_ = -999.; 
 		dijet_Mjj_ = -999.;
 		dipho_PToM_ = -999.;
-	  leadPho_PToM_ =-999.;
-    sublPho_PToM_ =-999.;
+		leadPho_PToM_ =-999.;
+		sublPho_PToM_ =-999.;
 
 		VbfMva_.reset( new TMVA::Reader("!Color:Silent"));
-//		VbfMva_->AddVariable("dijet_leadEta", &dijet_leadEta_);
- // 	VbfMva_->AddVariable("dijet_subleadEta", &dijet_subleadEta_);
+		//		VbfMva_->AddVariable("dijet_leadEta", &dijet_leadEta_);
+		// 	VbfMva_->AddVariable("dijet_subleadEta", &dijet_subleadEta_);
 		VbfMva_->AddVariable("dijet_LeadJPt", &dijet_LeadJPt_);
 		VbfMva_->AddVariable("dijet_SubJPt", &dijet_SubJPt_);
-	VbfMva_->AddVariable("dijet_abs_dEta", &dijet_abs_dEta_);
+		VbfMva_->AddVariable("dijet_abs_dEta", &dijet_abs_dEta_);
 		VbfMva_->AddVariable("dijet_Mjj", &dijet_Mjj_);
 		VbfMva_->AddVariable("dijet_Zep", &dijet_Zep_);
 
@@ -91,7 +91,7 @@ namespace flashgg {
 
 
 		VbfMva_->AddVariable("dijet_dPhi_trunc", &dijet_dPhi_trunc_);
-	//	VbfMva_->AddVariable("dipho_pt/mass", &dipho_PToM_);
+		//	VbfMva_->AddVariable("dipho_pt/mass", &dipho_PToM_);
 		VbfMva_->AddVariable("leadPho_PToM", &leadPho_PToM_);
 		VbfMva_->AddVariable("sublPho_PToM", &sublPho_PToM_);
 		VbfMva_->BookMVA("BDTG",vbfMVAweightfile_.fullPath());
@@ -149,11 +149,11 @@ namespace flashgg {
 				// within eta 4.7?
 				if (fabs(jet->eta()) > 4.7) continue;
 				// close to lead photon?
-				float dPhi = jet->phi() - phi1;
+				float dPhi = deltaPhi(jet->phi(),phi1);
 				float dEta = jet->eta() - eta1;
 				if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
 				// close to sublead photon?
-				dPhi = jet->phi() - phi2;
+				dPhi = deltaPhi(jet->phi(),phi2);
 				dEta = jet->eta() - eta2;
 				if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
 
@@ -186,7 +186,7 @@ namespace flashgg {
 
 				dijet_leadEta_ = dijet.first->eta();
 				dijet_subleadEta_ = dijet.second->eta();
-			  dijet_abs_dEta_ = std::fabs(dijet.first->eta()- dijet.second->eta());
+				dijet_abs_dEta_ = std::fabs(dijet.first->eta()- dijet.second->eta());
 				dijet_LeadJPt_ = dijet.first->pt();
 				dijet_SubJPt_ = dijet.second->pt();
 
@@ -197,12 +197,11 @@ namespace flashgg {
 
 				auto diphoton_p4 =leadPho_p4 + sublPho_p4;
 				auto dijet_p4 = leadJet_p4 + sublJet_p4;
-				float dijet_dPhi_ = fabs( dijet_p4.Phi() - diphoton_p4.Phi());
+				float dijet_dPhi_ = (deltaPhi(dijet_p4.Phi(),diphoton_p4.Phi()));
 
 				dijet_dPhi_trunc_ = std::min(dijet_dPhi_, (float) 2.916);
 
 				dijet_Zep_ = fabs(diphoton_p4.Eta() - 0.5*(leadJet_p4.Eta() + sublJet_p4.Eta()));
-				dijet_dPhi_ = fabs( dijet_p4.Phi() - diphoton_p4.Phi());
 				dijet_Mjj_ = dijet_p4.M();
 				dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
 				leadPho_PToM_ =  diPhotonPointers[candIndex]->leadingPhoton()->pt() / diphoton_p4.M();
