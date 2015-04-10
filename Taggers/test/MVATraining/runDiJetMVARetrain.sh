@@ -56,4 +56,4 @@ echo -e "##################################################"
 echo -e "######          RETRAINING COMPLETE         ######"
 echo -e "##################################################"
 echo
-echo -e " You can retrieve your ROC curve for this training from plots/VBF_ROCs.pdf
+echo -e " You can retrieve your ROC curve for this training from plots/VBF_ROCs_${NEvent}.pdf"

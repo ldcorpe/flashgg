@@ -75,5 +75,5 @@ echo -e "######          RETRAINING COMPLETE         ######"
 echo -e "##################################################"
 echo
 echo -e " You can retrieve your ROC curve for this training from:"
-echo -e " plots/VBF_ROCs.pdf"
-echo -e " plots/VBFDiPhoDiJet_ROCs.pdf"
+echo -e " plots/VBF_ROCs_${NEvent}.pdf"
+echo -e " plots/VBFDiPhoDiJet_ROCs_${NEvent}.pdf"

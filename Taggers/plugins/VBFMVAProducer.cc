@@ -96,7 +96,8 @@ namespace flashgg {
             //VbfMva_->AddVariable("dipho_pt/mass", &dipho_PToM_);
             VbfMva_->AddVariable( "leadPho_PToM", &leadPho_PToM_ );
             VbfMva_->AddVariable( "sublPho_PToM", &sublPho_PToM_ );
-            VbfMva_->BookMVA( "BDT", vbfMVAweightfile_.fullPath() );
+            //VbfMva_->BookMVA( "BDT", vbfMVAweightfile_.fullPath() );
+            VbfMva_->BookMVA( "BDTG", vbfMVAweightfile_.fullPath() );
         }
 
 
@@ -225,11 +226,14 @@ namespace flashgg {
                 //std::cout << mvares.subleadJet.eta() << std::endl;
 
             }
-
-            if( _isLegacyMVA ) {
-                mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA( "BDTG" );
+            if(hasValidVBFDijet){
+                if(_isLegacyMVA){
+                    mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA("BDTG");
+                } else {
+                    mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA("BDTG");
+                }
             } else {
-                mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA( "BDT" );
+                mvares.vbfMvaResult_value = -9999.;
             }
 
             //	mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA("BDT");

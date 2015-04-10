@@ -68,8 +68,8 @@ namespace flashgg {
             vbfDiPhoDiJetMva_->AddVariable( "dipho_mva", &dipho_mva_ );
             vbfDiPhoDiJetMva_->AddVariable( "dijet_mva", &dijet_mva_ );
             vbfDiPhoDiJetMva_->AddVariable( "dipho_PToM", &dipho_PToM_ );
-            vbfDiPhoDiJetMva_->BookMVA( "BDT", vbfDiPhoDiJetMVAweightfile_.fullPath() );
-            //	vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
+         // vbfDiPhoDiJetMva_->BookMVA( "BDT", vbfDiPhoDiJetMVAweightfile_.fullPath() );
+         	vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
         }
 
 
@@ -108,13 +108,16 @@ namespace flashgg {
             auto sublPho_p4 =  diPhotons->ptrAt( candIndex )->subLeadingPhoton()->p4();
             auto diphoton_p4 = leadPho_p4 + sublPho_p4;
             dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
+            if(dijet_mva_ > -999.){
+                if(_useLegacyMVA){
+                    mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
+                }else {
 
-            if( _useLegacyMVA ) {
-                mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA( "BDTG" );
+                    mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
+                    //mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDT");
+                }
             } else {
-
-                //mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
-                mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA( "BDT" );
+                mvares.vbfDiPhoDiJetMvaResult = -9999.;
             }
 
             mvares.dijet_mva =   dijet_mva_ ;

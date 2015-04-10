@@ -40,7 +40,7 @@ process.VBFMVADumperNew.quietRooFit = True
 
 cfgTools.addCategories(process.VBFMVADumperNew,
 			[## cuts are applied in cascade
-			("All","dipho_PToM>=0",0),
+			("All","vbfMvaResult_value > -99",0),
 			],
 			variables=[
 			"dijet_abs_dEta   :=  dijet_abs_dEta  ",
@@ -58,7 +58,7 @@ cfgTools.addCategories(process.VBFMVADumperNew,
 			],
 			histograms=[
 			#"mvaresult>>VBFMVAValue(100,-1000,1000)",
-			"vbfMvaResult_value>>VBFMVAValue(100,-1,1)",
+			"vbfMvaResult_value>>VBFMVAValue(100,-1.2,1.2)",
 			#"VBFMVAValue>>VBFMVAValue2(100,-1,1)",
 			]
 			)
@@ -73,7 +73,7 @@ process.VBFDiPhoDiJetMVADumperNew.quietRooFit = True
 
 cfgTools.addCategories(process.VBFDiPhoDiJetMVADumperNew,
 			[## cuts are applied in cascade
-			("All","dipho_PToM>=0",0),
+			("All","dijet_mva>-99",0),
 			],
 			variables=[
 			"dijet_mva :=  dijet_mva",
@@ -82,7 +82,7 @@ cfgTools.addCategories(process.VBFDiPhoDiJetMVADumperNew,
 			"vbfDiPhoDiJetMvaResult := vbfDiPhoDiJetMvaResult",
 			],
 			histograms=[
-			"VBFDiPhoDiJetMVAResult>>VBFDiPhoDiJetMVAResult(100,-1,1)",
+			"VBFDiPhoDiJetMVAResult>>VBFDiPhoDiJetMVAResult(100,-1.2,1.2)",
 			]
 			)
 # split tree, histogram and datasets by process

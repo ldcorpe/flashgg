@@ -40,7 +40,7 @@ process.VBFMVADumperNew.quietRooFit = True
 
 cfgTools.addCategories(process.VBFMVADumperNew,
 	[## cuts are applied in cascade
-	 ("GoodVBFNew","dijet_LeadJPt>=0",0)
+	 ("GoodVBFNew","vbfMvaResult_value>-99",0)
 	],
 	variables=[
 	"dijet_abs_dEta := dijet_abs_dEta ",
@@ -54,10 +54,11 @@ cfgTools.addCategories(process.VBFMVADumperNew,
 	"leadPho_PToM := leadPho_PToM ",
 	"sublPho_PToM := sublPho_PToM ",
 	"dijet_dPhi_trunc := dijet_dPhi_trunc ",
+	"vbfMvaResult_value := vbfMvaResult_value",
 	"VBFMVAValue := VBFMVAValue ",
 	],
 	histograms=[
-	"VBFMVAValue>>VBFMVAValue(100,-1,1)",
+	"VBFMVAValue>>VBFMVAValue(100,-1.2,1.2)",
 	]
 	)
 
@@ -70,7 +71,7 @@ process.VBFMVADumper.quietRooFit = True
 
 cfgTools.addCategories(process.VBFMVADumper,
 	[## cuts are applied in cascade
-	("GoodVBFLeg","dijet_LeadJPt>=0",0)
+	("GoodVBFLeg","vbfMvaResult_value>-99",0)
 	],
 	variables=[
 	"dijet_abs_dEta := dijet_abs_dEta ",
@@ -84,10 +85,11 @@ cfgTools.addCategories(process.VBFMVADumper,
 	"leadPho_PToM := leadPho_PToM ",
 	"sublPho_PToM := sublPho_PToM ",
 	"dijet_dPhi_trunc := dijet_dPhi_trunc ",
+	"vbfMvaResult_value := vbfMvaResult_value",
 	"VBFMVAValue := VBFMVAValue ",
 	],
 	histograms=[
-	"VBFMVAValue>>VBFMVAValue(100,-1,1)",
+	"VBFMVAValue>>VBFMVAValue(100,-1.2,1.2)",
 	]
 	)
 
@@ -103,7 +105,7 @@ process.VBFDiPhoDiJetMVADumperNew.quietRooFit = True
 
 cfgTools.addCategories(process.VBFDiPhoDiJetMVADumperNew,
 	[## cuts are applied in cascade
-	 ("GoodVBFDiPhoDiJetNew","dipho_PToM>=0",0)
+	("GoodVBFDiPhoDiJetNew","dijet_mva>-99",0)
 	],
 	variables=[
 			"dijet_mva :=  dijet_mva",
@@ -112,7 +114,7 @@ cfgTools.addCategories(process.VBFDiPhoDiJetMVADumperNew,
 			"vbfDiPhoDiJetMvaResult := vbfDiPhoDiJetMvaResult",
 	],
 	histograms=[
-			"vbfDiPhoDiJetMvaResult>>VBFDiPhoDiJetMVAValue(100,-1,1)",
+			"vbfDiPhoDiJetMvaResult>>VBFDiPhoDiJetMVAValue(100,-1.2,1.2)",
 	]
 	)
 
@@ -125,7 +127,7 @@ process.VBFDiPhoDiJetMVADumper.quietRooFit = True
 
 cfgTools.addCategories(process.VBFDiPhoDiJetMVADumper,
 	[## cuts are applied in cascade
-	("GoodVBFDiPhoDiJetLeg","dipho_PToM>=0",0)
+	("GoodVBFDiPhoDiJetLeg","dijet_mva>-99",0)
 	],
 	variables=[
 			"dijet_mva :=  dijet_mva",
@@ -134,7 +136,7 @@ cfgTools.addCategories(process.VBFDiPhoDiJetMVADumper,
 			"vbfDiPhoDiJetMvaResult := vbfDiPhoDiJetMvaResult",
 	],
 	histograms=[
-			"vbfDiPhoDiJetMvaResult>>VBFDiPhoDiJetMVAValue(100,-1,1)",
+			"vbfDiPhoDiJetMvaResult>>VBFDiPhoDiJetMVAValue(100,-1.2,1.2)",
 	]
 	)
 
