@@ -20,6 +20,13 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                          VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVA'),
                                          Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
+flashggVBFTagNew = cms.EDProducer("FlashggVBFTagProducer",
+#                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
+                                         DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                         VBFDiPhoDiJetMVAResultTag=cms.untracked.InputTag('flashggVBFDiPhoDiJetMVANew'),
+                                         VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVANew'),
+                                         Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
+                                         )
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					TTHJetTag=cms.untracked.InputTag('flashggJets'),
