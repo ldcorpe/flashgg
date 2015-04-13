@@ -68,27 +68,27 @@ void VBFDiPhoDiJetMVA_Training( TString Nevent = "10000", TString Level = "VBFDi
     float   weightS[5];
     float   weightB[4];
 
-    /*	weightB[0]=0;
-        weightB[1]=4746.0/nEvents;// DyJetsToLL
-        weightB[2]=17180.0*0.0379/nEvents;//gamJets pt>40
-        weightB[3]=145400.0*0.001776/nEvents;//gamJets pt  in 20->40
+    weightB[0]=0;
+    weightB[1]=4746.0/nEvents;// DyJetsToLL
+    weightB[2]=17180.0*0.0379/nEvents;//gamJets pt>40
+    weightB[3]=145400.0*0.001776/nEvents;//gamJets pt  in 20->40
 
-        weightS[0]=0;
-        weightS[1]=43.92*2.28e-3/nEvents; //ggH
-        weightS[2]=3.748*2.28e-3/nEvents;; //ttH
-        weightS[3]=2.2496*2.28e-3/nEvents;; //VBH
-        weightS[4]=0.5608*2.28e-3/nEvents;; //WZH*/
+    weightS[0]=0;
+    weightS[1]=43.92*2.28e-3/nEvents; //ggH
+    weightS[2]=3.748*2.28e-3/nEvents; //ttH
+    weightS[3]=2.2496*2.28e-3/nEvents; //VBH
+    weightS[4]=0.5608*2.28e-3/nEvents; //WZH
 
-    weightB[0]=1;
-    weightB[1]=1;
-    weightB[2]=1;
-    weightB[3]=1;
+    /*  weightB[0]=1;
+        weightB[1]=1;
+        weightB[2]=1;
+        weightB[3]=1;
 
-    weightS[0]=1;
-    weightS[1]=1;
-    weightS[2]=1;
-    weightS[3]=1;
-    weightS[4]=1;
+        weightS[0]=1;
+        weightS[1]=1;
+        weightS[2]=1;
+        weightS[3]=1;
+        weightS[4]=1;*/
 
 
     if( Level == "VBFDiPhoDiJet" ) {

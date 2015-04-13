@@ -321,7 +321,7 @@ void makeROCs( TString Nevent = "10000", TString Level = "VBF" )
     mul->Add(newg);
 	int itc1 = itc;
     mul->SetTitle( ";background efficiency;signal efficiency" );
-    mul->Draw( "APL" );
+    mul->Draw( "APL*" );
 	
     TLine *tl = new TLine(0,0,1,1);
 	std::pair<double,double> wp = workingPoint(oldg);
