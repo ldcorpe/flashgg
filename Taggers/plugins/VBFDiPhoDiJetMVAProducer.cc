@@ -40,6 +40,9 @@ namespace flashgg {
         float dijet_mva_;
         float dipho_PToM_;
 
+        bool jet1genMatch=0;
+        bool jet2genMatch=0;
+
 
     };
 
@@ -100,6 +103,8 @@ namespace flashgg {
 
             edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResults->ptrAt( candIndex );
             dijet_mva_ = vbf_mvares->vbfMvaResult_value;
+            jet1genMatch = vbf_mvares->jet1genMatch;
+            jet2genMatch = vbf_mvares->jet2genMatch;
 
             flashgg::VBFDiPhoDiJetMVAResult mvares;
 
@@ -123,6 +128,9 @@ namespace flashgg {
             mvares.dijet_mva =   dijet_mva_ ;
             mvares.dipho_mva =   dipho_mva_ ;
             mvares.dipho_PToM =   dipho_PToM_ ;
+
+            mvares.jet1genMatch = jet1genMatch;
+            mvares.jet2genMatch = jet2genMatch;
 
             mvares.vbfMvaResult = ( VBFMVAResult )vbf_mvares;
 

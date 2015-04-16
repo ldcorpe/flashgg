@@ -8,6 +8,8 @@ namespace flashgg {
         dijet_mva( -9999. ),
         dipho_mva( -9999. ),
         dipho_PToM( -9999. ),
+        jet1genMatch (0),
+        jet2genMatch (0),
         vbfDiPhoDiJetMvaResult( -9999. ) {}
 
 

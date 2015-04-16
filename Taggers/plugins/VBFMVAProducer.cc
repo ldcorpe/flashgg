@@ -29,6 +29,7 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
+        EDGetTokenT<View<flashgg::Jet> > genMatchedJetToken_;
 
         unique_ptr<TMVA::Reader>VbfMva_;
         FileInPath vbfMVAweightfile_;
@@ -53,6 +54,7 @@ namespace flashgg {
     VBFMVAProducer::VBFMVAProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
         jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "JetTag", InputTag( "flashggJets" ) ) ) ),
+        genMatchedJetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "VBFJetFilterTag", InputTag( "flashggVBFJetFilter" ) ) ) ),
         _isLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) ),
         _minDijetMinv( iConfig.getParameter<double>( "MinDijetMinv" ) )
     {
@@ -113,6 +115,8 @@ namespace flashgg {
         Handle<View<flashgg::Jet> > jetsDz;
         evt.getByToken( jetTokenDz_, jetsDz );
         //	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
+        Handle<View<flashgg::Jet> > genMatchedJets;
+        evt.getByToken( genMatchedJetToken_, genMatchedJets );
 
         std::auto_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
 
@@ -132,7 +136,8 @@ namespace flashgg {
             dipho_PToM_ = -999.;
             leadPho_PToM_ = -999.;
             sublPho_PToM_ = -999.;
-
+            
+            std::cout << "DEBUG " << std::endl;
 
             // First find dijet by looking for highest-pt jets...
             std::pair <int, int> dijet_indices( -1, -1 );
@@ -146,6 +151,10 @@ namespace flashgg {
             float	eta2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->eta();
 
             bool hasValidVBFDijet = 0;
+        
+            bool jet1genMatch=0;
+            bool jet2genMatch=0;
+
             for( UInt_t jetLoop = 0; jetLoop < jetsDz->size() ; jetLoop++ ) {
 
                 Ptr<flashgg::Jet> jet  = jetsDz->ptrAt( jetLoop );
@@ -219,7 +228,21 @@ namespace flashgg {
                 //	std::cout<<"jet indices: " <<  dijet_indices.first << "	" << dijet_indices.second << std::endl;
                 mvares.leadJet = *jetsDz->ptrAt( dijet_indices.first );
                 mvares.subleadJet = *jetsDz->ptrAt( dijet_indices.second );
+                
+                for (unsigned int gjLoop =0; gjLoop< genMatchedJets->size(); gjLoop++){
 
+                    if (fabs(mvares.leadJet.eta() - genMatchedJets->ptrAt(gjLoop)->eta())  <0.02){
+                    // if they are the same, it should be exactly 0, but this gives a little room for float errors.
+                        jet1genMatch=1;
+                    }
+
+                    if (fabs(mvares.subleadJet.eta() - genMatchedJets->ptrAt(gjLoop)->eta())  <0.02){
+                        jet2genMatch=1;
+                    }
+                    if (jet1genMatch && jet2genMatch) break;
+
+                }
+                
 
                 //debug stuff
                 //std::cout << mvares.leadJet.eta() << std::endl;
@@ -249,6 +272,12 @@ namespace flashgg {
             mvares.dipho_PToM =   dipho_PToM_ ;
             mvares.sublPho_PToM = sublPho_PToM_ ;
             mvares.leadPho_PToM = leadPho_PToM_ ;
+
+            mvares.jet1genMatch = jet1genMatch;
+            mvares.jet2genMatch = jet2genMatch;
+
+            std::cout << "cand " << candIndex << " jet 1 " << mvares.leadJet.eta() << ", match " << jet1genMatch <<std::endl;
+            std::cout << "cand " << candIndex << " jet 2 " << mvares.leadJet.eta() << ", match " << jet2genMatch <<std::endl;
 
             vbf_results->push_back( mvares );
 

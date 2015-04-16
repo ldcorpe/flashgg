@@ -175,12 +175,12 @@ void VBFDiPhoDiJetMVA_Training( TString Nevent = "10000", TString Level = "VBFDi
     TCut mycutb = ""; // " leadPho_PToM> (60./120.) && sublPho_PToM> (30./120.)";
     if(Level =="VBFDiPhoDiJet") {
         if(skipEvtWNoVBF){
-            mycuts ="dijet_mva>-99";// Skip the event with -999
+            mycuts ="dijet_mva>-99 && jet1genMatch==1 && jet2genMatch==1";// Skip the event with -999
             mycutb ="dijet_mva>-99";//  
         }
     } else  if(Level =="VBF") {
         if(skipEvtWNoVBF){
-            mycuts ="vbfMvaResult_value>-99";// Skip the event with -999
+            mycuts ="vbfMvaResult_value>-99 && jet1genMatch==1 && jet2genMatch==1";// Skip the event with -999
             mycutb ="vbfMvaResult_value>-99";//  
         }
     }

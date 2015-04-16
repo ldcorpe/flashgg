@@ -19,9 +19,17 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
 		)
 
 
+
+# gen-matched VBF jet filter.
+flashggVBFJetFilter = cms.EDProducer('FlashggVBFJetFilter',
+		JetTag = cms.untracked.InputTag('flashggJets'),
+		GenParticleTag = cms.untracked.InputTag('prunedGenParticles')
+		)
+
 # the new VBF MVA
 flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
-		DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+	  DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+		VBFJetFilterTag = cms.untracked.InputTag('flashggVBFJetFilter'),
 		JetTag = cms.untracked.InputTag('flashggJets'),
 		UseLegacyMVA = cms.untracked.bool(False),
 		MinDijetMinv = cms.double(0.0),
@@ -35,5 +43,6 @@ flashggVBFDiPhoDiJetMVANew = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
 		VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVANew'),
 		UseLegacyMVA = cms.untracked.bool(False),
 		MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
+		#MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVANew'),
 		vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/test/MVATraining/weights/Flashgg_DiPhoDiJet_BDTG.weights.xml"),
 		)

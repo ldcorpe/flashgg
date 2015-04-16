@@ -17,6 +17,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1)
 process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring())
 #process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring( "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/HggPhys14/Phys14MicroAODV2/VBF_HToGG_M-125_13TeV-powheg-pythia6/HggPhys14-Phys14MicroAODV2-v0-Phys14DR-PU20bx25_PHYS14_25_V1-v1/150210_160130/0000/myMicroAODOutputFile_1.root"))
+#process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring( "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/HggPhys14/Phys14MicroAODV2/DYJetsToLL_M-50_13TeV-madgraph-pythia8/HggPhys14-Phys14MicroAODV2-v0-Phys14DR-PU4bx50_PHYS14_25_V1-v1/150210_155821/0000/myMicroAODOutputFile_1.root"))
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 process.load("flashgg/Taggers/flashggTagTester_cfi")
@@ -54,6 +55,8 @@ cfgTools.addCategories(process.VBFMVADumperNew,
 			"leadPho_PToM     :=  leadPho_PToM     ",
 			"sublPho_PToM     :=  sublPho_PToM     ",
 			"dijet_dPhi_trunc :=  dijet_dPhi_trunc ",
+			"jet1genMatch     :=  jet1genMatch",
+			"jet2genMatch     :=  jet2genMatch",
 			"vbfMvaResult_value := vbfMvaResult_value",
 			],
 			histograms=[
@@ -79,6 +82,8 @@ cfgTools.addCategories(process.VBFDiPhoDiJetMVADumperNew,
 			"dijet_mva :=  dijet_mva",
 			"dipho_mva :=  dipho_mva",
 			"dipho_PToM :=  dipho_PToM",
+			"jet1genMatch     :=  jet1genMatch",
+			"jet2genMatch     :=  jet2genMatch",
 			"vbfDiPhoDiJetMvaResult := vbfDiPhoDiJetMvaResult",
 			],
 			histograms=[
