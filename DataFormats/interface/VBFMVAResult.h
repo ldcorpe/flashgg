@@ -34,9 +34,9 @@ namespace flashgg {
         float leadPho_PToM;
         float sublPho_PToM;
 
-
         bool jet1genMatch;
         bool jet2genMatch;
+        float mgg;
 
         float VBFMVAValue() const {return vbfMvaResult_value;}
 

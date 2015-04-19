@@ -19,6 +19,7 @@ namespace flashgg {
         sublPho_PToM( -9999. ),
         jet1genMatch (0),
         jet2genMatch (0),
+        mgg (-9999.),
         vbfMvaResult_value( -9999. ) {}
 
     VBFMVAResult::VBFMVAResult( edm::Ptr<VBFMVAResult> x )
@@ -38,6 +39,7 @@ namespace flashgg {
         sublPho_PToM = x->sublPho_PToM ;
         jet2genMatch = x->jet2genMatch;
         jet2genMatch = x->jet2genMatch;
+        mgg= x->mgg;
         vbfMvaResult_value     = x->vbfMvaResult_value;
     }
 }
