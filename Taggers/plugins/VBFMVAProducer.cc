@@ -48,6 +48,8 @@ namespace flashgg {
         float leadPho_PToM_;
         float sublPho_PToM_;
 
+        float mgg;
+
 
     };
 
@@ -72,6 +74,8 @@ namespace flashgg {
         dipho_PToM_ = -999.;
         leadPho_PToM_ = -999.;
         sublPho_PToM_ = -999.;
+
+        mgg =-999.;
 
 
         VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
@@ -136,6 +140,7 @@ namespace flashgg {
             dipho_PToM_ = -999.;
             leadPho_PToM_ = -999.;
             sublPho_PToM_ = -999.;
+            mgg =-999.;
             
             std::cout << "DEBUG " << std::endl;
 
@@ -223,6 +228,8 @@ namespace flashgg {
                 leadPho_PToM_ = diPhotons->ptrAt( candIndex )->leadingPhoton()->pt() / diphoton_p4.M();
                 sublPho_PToM_ = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->pt() / diphoton_p4.M();
 
+                mgg = diphoton_p4.M();
+
                 //debug stuff
                 //	std::cout<<"numbr of jets " <<  jetsDz->size() << std::endl;
                 //	std::cout<<"jet indices: " <<  dijet_indices.first << "	" << dijet_indices.second << std::endl;
@@ -276,8 +283,10 @@ namespace flashgg {
             mvares.jet1genMatch = jet1genMatch;
             mvares.jet2genMatch = jet2genMatch;
 
-            std::cout << "cand " << candIndex << " jet 1 " << mvares.leadJet.eta() << ", match " << jet1genMatch <<std::endl;
-            std::cout << "cand " << candIndex << " jet 2 " << mvares.leadJet.eta() << ", match " << jet2genMatch <<std::endl;
+            mvares.mgg =mgg;
+
+           // std::cout << "cand " << candIndex << " jet 1 " << mvares.leadJet.eta() << ", match " << jet1genMatch <<std::endl;
+           // std::cout << "cand " << candIndex << " jet 2 " << mvares.leadJet.eta() << ", match " << jet2genMatch <<std::endl;
 
             vbf_results->push_back( mvares );
 

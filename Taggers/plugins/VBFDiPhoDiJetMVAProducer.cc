@@ -43,6 +43,8 @@ namespace flashgg {
         bool jet1genMatch=0;
         bool jet2genMatch=0;
 
+        float mgg;
+
 
     };
 
@@ -105,6 +107,7 @@ namespace flashgg {
             dijet_mva_ = vbf_mvares->vbfMvaResult_value;
             jet1genMatch = vbf_mvares->jet1genMatch;
             jet2genMatch = vbf_mvares->jet2genMatch;
+            mgg = vbf_mvares->mgg;
 
             flashgg::VBFDiPhoDiJetMVAResult mvares;
 
@@ -131,6 +134,7 @@ namespace flashgg {
 
             mvares.jet1genMatch = jet1genMatch;
             mvares.jet2genMatch = jet2genMatch;
+            mvares.mgg = mgg;
 
             mvares.vbfMvaResult = ( VBFMVAResult )vbf_mvares;
 
