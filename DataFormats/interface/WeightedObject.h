@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -13,7 +14,10 @@ namespace flashgg {
 
     public:
         float weight( string key ) const;
-        float centralWeight() const { return weight( central_key ); }
+        float centralWeight() const { 
+        std::cout << "DEBUG size of labels " << _labels.size() << ", size of _weights " << _weights.size() << std::endl;
+        return weight( central_key ); 
+        }
         void setWeight( string key, float val );
         void setCentralWeight( float val ) { setWeight( central_key, val ); }
         bool hasWeight( string key ) const;
