@@ -36,6 +36,7 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string(options.outputFile))
 
 process.extraDumpers = cms.Sequence()
+
 systlabels = [""]
 counter =0;
 for r9 in ["HighR9","LowR9"]:
@@ -49,6 +50,7 @@ for r9 in ["HighR9","LowR9"]:
 process.extraDumpers = cms.Sequence()
 process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 import flashgg.Taggers.dumperConfigTools as cfgTools
+import flashgg.Systematics.SystematicDumperDefaultVariables as systVars
 
 process.diphotonDumper.className = "DiPhotonTagDumper"
 process.diphotonDumper.src = "flashggSystTagMerger"
@@ -61,28 +63,19 @@ process.diphotonDumper.systLabel = ""
 
 for systlabel in systlabels:
   cutstring = "hasSyst(\"%s\")"%systlabel
-  #print "syst label ", systlabel
-
-  cfgTools.addCategory(process.diphotonDumper,
-                      "flashggUntaggedTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=5, 
-                                    variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                    "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                    "genZ           :=tagTruth().genPV().z",
-                                    "vtxZ           :=diPhoton().vtx().z",
-                                    "dZ             :=abs(tagTruth().genPV().z-diPhoton().vtx().z)"
+  dumpVariables = systVars.defaultVariables
+  dumpHistograms = systVars.defaultHistograms
+  if not (systlabel == ""):
+    dumpVariables = systVars.systematicVariables
+    dumpHistograms = systVars.systematicHistograms
   
-                                    ],
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]"
-                                     ]
+  cfgTools.addCategory(process.diphotonDumper,
+                       "flashggUntaggedTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=5, 
+                       variables= dumpVariables,
+                       histograms= dumpHistograms,
                       )
   
   cfgTools.addCategory(process.diphotonDumper,
@@ -204,7 +197,7 @@ for systlabel in systlabels:
                                                 "nElectrons               :=electrons().size()",
                                                 "nJets                    :=jets().size()",
                                                 "nBJets                   :=bJets().size()",
-                       #                       "centralWeight := centralWeight()",
+                        #                       "centralWeight := weight(\"Central\")",
                                                "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
                                                "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
