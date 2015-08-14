@@ -98,8 +98,12 @@ namespace flashgg {
 
             const	UntaggedTag *untagged = dynamic_cast<const UntaggedTag *>( chosenTag );
             if( untagged != NULL ) {
-                std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << " mass=" << untagged->diPhoton()->mass() <<
-                          ", systLabel " << untagged->systLabel() <<  std::endl;
+                std::cout << "[UNTAGGED] category " ;
+                std::cout << untagged->categoryNumber()
+                          << " mass=" << untagged->diPhoton()->mass()
+                          << ", systLabel " << untagged->systLabel()
+                          << ", central value " << untagged->centralWeight()
+                          <<  std::endl;
                 if( untagged->tagTruth().isNonnull() ) {
                     std::cout << "\t[UNTAGGED TRUTH]: genPV=" << untagged->tagTruth()->genPV() << std::endl;
                 }
@@ -107,10 +111,15 @@ namespace flashgg {
 
             const	VBFTag *vbftag = dynamic_cast<const VBFTag *>( chosenTag );
             if( vbftag != NULL ) {
-                std::cout << "[VBF] Category " << vbftag->categoryNumber() << " with lead jet pt eta "
-                          << vbftag->leadingJet().pt() << " " << vbftag->leadingJet().eta()
-                          << " and sublead jet eta " << vbftag->subLeadingJet().pt() << " " << vbftag->subLeadingJet().eta() << " mass=" << vbftag->diPhoton()->mass()
-                          << ", systLabel " << vbftag->systLabel() << std::endl;
+                std::cout << "[VBF] Category ";
+                std::cout << vbftag->categoryNumber()
+                          << " with lead jet pt eta "
+                          << vbftag->leadingJet().pt()
+                          << " " << vbftag->leadingJet().eta()
+                          << " and sublead jet eta " << vbftag->subLeadingJet().pt() << " " << vbftag->subLeadingJet().eta()
+                          << " mass=" << vbftag->diPhoton()->mass()
+                          << ", systLabel " << vbftag->systLabel()
+                          << std::endl;
                 if( vbftag->tagTruth().isNonnull() ) {
                     const VBFTagTruth *truth = dynamic_cast<const VBFTagTruth *>( &*vbftag->tagTruth() );
                     assert( truth != NULL );  // If we stored a VBFTag with a nonnull pointer, we either have VBFTagTruth or a nutty bug
@@ -164,46 +173,64 @@ namespace flashgg {
 
             const   TTHHadronicTag *tthhadronictag = dynamic_cast<const TTHHadronicTag *>( chosenTag );
             if( tthhadronictag != NULL ) {
-                std::cout << "[TTHhadronic] Category " << tthhadronictag->categoryNumber()
+                std::cout << "[TTHhadronic] Category " ;
+                std::cout << tthhadronictag->categoryNumber()
                           << " with NJet=" << tthhadronictag->jetVector().size()
                           << " and NBLoose= " << tthhadronictag->nBLoose()
                           << " and NBMedium= " << tthhadronictag->nBMedium()
+                          << " and centralWeight " << tthhadronictag->centralWeight()
+                          << " and systLabel " << tthhadronictag->systLabel()
                           << std::endl;
             }
 
             const   TTHLeptonicTag *tthleptonictag = dynamic_cast<const TTHLeptonicTag *>( chosenTag );
             if( tthleptonictag != NULL ) {
-                std::cout << "[TTHleptonic] Category " << tthleptonictag->categoryNumber()
+                std::cout << "[TTHleptonic] Category " ;
+                std::cout << tthleptonictag->categoryNumber()
                           << " nelectrons=" << tthleptonictag->electrons().size()
                           << " nmuons=" << tthleptonictag->muons().size()
+                          << " and centralWeight " << tthleptonictag->centralWeight()
+                          << " and systLabel " << tthleptonictag->systLabel()
                           << std::endl;
             }
 
             const   VHTightTag *vhtighttag = dynamic_cast<const VHTightTag *>( chosenTag );
             if( vhtighttag != NULL ) {
-                std::cout << "[VHtight] Category " << vhtighttag->categoryNumber()
+                std::cout << "[VHtight] Category " ;
+                std::cout << vhtighttag->categoryNumber()
                           << " nmuons=" << vhtighttag->muons().size()
+                          << " and centralWeight " << vhtighttag->centralWeight()
+                          << " and systLabel " << vhtighttag->systLabel()
                           << std::endl;
             }
 
             const   VHLooseTag *vhloosetag = dynamic_cast<const VHLooseTag *>( chosenTag );
             if( vhloosetag != NULL ) {
-                std::cout << "[VHloose] Category " << vhloosetag->categoryNumber()
+                std::cout << "[VHloose] Category " ;
+                std::cout << vhloosetag->categoryNumber()
                           << " nmuons=" << vhloosetag->muons().size()
                           << " systLabel " << vhloosetag->systLabel()
+                          << " and centralWeight " << vhloosetag->centralWeight()
+                          << " and systLabel " << vhloosetag->systLabel()
                           << std::endl;
             }
 
             const   VHHadronicTag *vhhadronictag = dynamic_cast<const VHHadronicTag *>( chosenTag );
             if( vhhadronictag != NULL ) {
-                std::cout << "[VHhadronic] Category "    << vhhadronictag->categoryNumber()
+                std::cout << "[VHhadronic] Category " ;
+                std::cout << vhhadronictag->categoryNumber()
                           << " with leadingJet    pt = " << vhhadronictag->leadingJet()->pt()
                           << " and  subleadingJet pt = " << vhhadronictag->subLeadingJet()->pt()
+                          << " and centralWeight " << vhhadronictag->centralWeight()
+                          << " and systLabel " << vhhadronictag->systLabel()
                           << std::endl;
             }
             const    VHEtTag *vhettag = dynamic_cast<const VHEtTag *>( chosenTag );
             if( vhettag != NULL ) {
-                std::cout << "[VHEt] Category "      << vhettag->categoryNumber()
+                std::cout << "[VHEt] Category ";
+                std::cout << vhettag->categoryNumber()
+                          << " and centralWeight " << vhettag->centralWeight()
+                          << " and systLabel " << vhettag->systLabel()
                           //<< " with MEt        = "   << vhettag->met()
                           << std::endl;
             }

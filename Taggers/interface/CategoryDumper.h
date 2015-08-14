@@ -126,12 +126,24 @@ namespace flashgg {
                 stepwise_functors_.push_back( std::shared_ptr<wrapped_stepwise_functor_type>( new wrapped_stepwise_functor_type( new stepwise_functor_type( expr ) ) ) );
                 names_.push_back( name );
                 variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax ) );
+                std::cout << "[DEBUG catgeoryDumper constructor vairbales push back for  IF 1 " << name << std::endl;
+                std::cout << "[DEBUG] >> 0: " <<  0.  << std::endl;
+                std::cout << "[DEBUG] >> 1: ??"  << std::endl;
+                std::cout << "[DEBUG] >> 2: " <<  nbins  << std::endl;
+                std::cout << "[DEBUG] >> 3: " <<  vmin  << std::endl;
+                std::cout << "[DEBUG] >> 4: " <<  vmax  << std::endl;
             } else {
                 auto expr = var.getParameter<string>( "expr" );
                 auto name = var.getUntrackedParameter<string>( "name", expr );
                 functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
                 names_.push_back( name );
                 variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
+                std::cout << "[DEBUG catgeoryDumper constructor vairbales push back for  IF 0 " << name << std::endl;
+                std::cout << "[DEBUG] >> 0: " <<  0.  << std::endl;
+                std::cout << "[DEBUG] >> 1: ??"  << std::endl;
+                std::cout << "[DEBUG] >> 2: " <<  nbins  << std::endl;
+                std::cout << "[DEBUG] >> 3: " <<  vmin  << std::endl;
+                std::cout << "[DEBUG] >> 4: " <<  vmax  << std::endl;
             }
         }
 
@@ -257,23 +269,33 @@ namespace flashgg {
     template<class F, class O>
     void CategoryDumper<F, O>::fill( const object_type &obj, double weight, int n_cand )
     {
+        std::cout << " DEBUG CategoryDumper Fill 0 " << std::endl;
         n_cand_ = n_cand;
         weight_ = weight;
         if( dataset_ ) {
             dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
         }
+        std::cout << " DEBUG CategoryDumper Fill 1 " << std::endl;
         // for( auto & var : variables_ ) {
+        std::cout << " DEBUG CategoryDumper Fill 2 (vars)" << std::endl;
         for( size_t ivar = 0; ivar < names_.size(); ++ivar ) {
             auto name = names_[ivar].c_str();
+            std::cout << " DEBUG CategoryDumper Fill 2.1 var name = " << name  << std::endl;
             auto &var = variables_[ivar];
+            // std::cout<< " DEBUG CategoryDumper Fill 2.2 var = "<< var << std::endl;
             auto &val = std::get<0>( var );
+            std::cout << " DEBUG CategoryDumper Fill 2.3 var val = " << val  << std::endl;
             val = ( *std::get<1>( var ) )( obj );
+            std::cout << " DEBUG CategoryDumper Fill 2.4 var val (std)  = " << val  << std::endl;
             if( dataset_ ) {
                 dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );
             }
         }
+        std::cout << " DEBUG CategoryDumper Fill 3 tree" << std::endl;
         if( tree_ ) { tree_->Fill(); }
+        std::cout << " DEBUG CategoryDumper Fill 4 dataset" << std::endl;
         if( dataset_ ) { dataset_->add( rooVars_, weight_ ); }
+        std::cout << " DEBUG CategoryDumper Fill 5 hist" << std::endl;
         if( hbooked_ ) {
             for( auto &histo : histograms_ ) {
                 auto &th1 = *std::get<5>( histo );
@@ -286,6 +308,7 @@ namespace flashgg {
                 }
             }
         }
+        std::cout << " DEBUG CategoryDumper Fill 6 end" << std::endl;
     }
 
 }

@@ -10,7 +10,7 @@ options = VarParsing('analysis')
 print options
 
 processId = "tth"
-targetMass = 120.
+targetMass = 125.
 processId = "%s_%i" % (processId,int(targetMass))
 
 # maxEvents is the max number of events processed of each file, not globally
@@ -136,7 +136,6 @@ for systlabel in systlabels:
                                      "nJets>>nJets(5,0,5)"
                                      ]
                          )
-  
   cfgTools.addCategory(process.diphotonDumper,
                       "flashggVHLooseTag__%s"%systlabel,
                       cutbased=cutstring,
@@ -189,6 +188,7 @@ for systlabel in systlabels:
                                         "subleadJetPt:leadJetPt>>JetptLeadvsSub(8,20,100:18,20,200)",
                                      ]
                       )
+   
   
   cfgTools.addCategory(process.diphotonDumper,
                       "flashggTTHLeptonicTag__%s"%systlabel,
@@ -200,28 +200,28 @@ for systlabel in systlabels:
                                     "subleadPt                :=diPhoton().subLeadingPhoton.pt",
                                               "diphoMVA                 :=diPhotonMVA().result",    
                                     "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                "nMuons                   :=getMuons().size()",
-                                                "nElectrons               :=getElectrons().size()",
-                                                "nJets                    :=getJets().size()",
-                                                "nBJets                   :=getBJets().size()",
+                                               "nMuons                   :=muons().size()",
+                                                "nElectrons               :=electrons().size()",
+                                                "nJets                    :=jets().size()",
+                                                "nBJets                   :=bJets().size()",
+                       #                       "centralWeight := centralWeight()",
                                                "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
                                                "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                                              "centralWeight := centralWeight"
-  #                                            "MuonWeightDown01sigma : weight('MuonWeightDown01sigma')",
-  #                                            "MuonWeightUp01sigma : weight('MuonWeightUp01sigma')",
-  #                                            "ElectronWeightDown01sigma : weight('ElectronWeightDown01sigma')",
-  #                                            "ElectronWeightUp01sigma : weight('ElectronWeightUp01sigma')",
+                        #                      "MuonWeightDown01sigma := weight(\"MuonWeightDown01sigma\")",
+                        #                      "MuonWeightUp01sigma := weight(\"MuonWeightUp01sigma\")",
+                        #                      "ElectronWeightDown01sigma := weight(\"ElectronWeightDown01sigma\")",
+                        #                      "ElectronWeightUp01sigma := weight(\"ElectronWeightUp01sigma\")",
                                     ],
                          ## histograms to be plotted. 
                          ## the variables need to be defined first
                          histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                     "nMuons:nElectrons>>nElectronsVsMuons(2,0,2:2,0,2)",
-                                     "nJets>>nJets(5,0,5)",
-                                     "nBJets>>nBJets(5,0,5)"
+                    #                 "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
+                    #                 "diphoMVA>>diphoMVA(50,0,1)",
+                    #                 "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
+                    #                 "nMuons:nElectrons>>nElectronsVsMuons(2,0,2:2,0,2)",
+                    #                 "nJets>>nJets(5,0,5)",
+                    #                 "nBJets>>nBJets(5,0,5)"
                                      ]
                       )
   
@@ -235,8 +235,8 @@ for systlabel in systlabels:
                                     "subleadPt                :=diPhoton().subLeadingPhoton.pt",
                                                 "diphoMVA                 :=diPhotonMVA().result",    
                                     "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                  "nJets                    :=getJetVector().size()",
-                                                  "nBJets                   :=getBJetVector().size()",
+                                                  "nJets                    :=jetVector().size()",
+                                                  "nBJets                   :=bJetVector().size()",
                                                "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
                                                "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
@@ -252,7 +252,7 @@ for systlabel in systlabels:
                                      "nBJets>>nBJets(5,0,5)"
                                      ]
                       )
-
+  
 process.p1 = cms.Path(
     process.diphotonDumper
    # + process.extraDumpers

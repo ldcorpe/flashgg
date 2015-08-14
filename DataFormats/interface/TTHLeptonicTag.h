@@ -14,11 +14,8 @@ namespace flashgg {
         TTHLeptonicTag();
         TTHLeptonicTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
         TTHLeptonicTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
-
-        ~TTHLeptonicTag();
-
-        TTHLeptonicTag( const TTHLeptonicTag & );
         TTHLeptonicTag *clone() const { return ( new TTHLeptonicTag( *this ) ); }
+        ~TTHLeptonicTag();
 
         const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}

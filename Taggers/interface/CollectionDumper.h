@@ -280,7 +280,7 @@ namespace flashgg {
         for( auto &cand : collection ) {
             auto cat = classifier_( cand );
             auto which = dumpers_.find( cat.first );
-            //    std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
+            std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
             //    auto count = dumpers_.count( cat.first );
             //    std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
 
@@ -288,6 +288,7 @@ namespace flashgg {
                 // which->second.print();
                 int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
                 // FIXME per-candidate weights
+                std::cout << " DEBUG fill" << std::endl;
                 which->second[isub].fill( cand, weight_, maxCandPerEvent_ - nfilled );
                 --nfilled;
                 //   which++;
