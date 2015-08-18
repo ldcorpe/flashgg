@@ -97,9 +97,9 @@ namespace flashgg {
         auto_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
         auto_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
 
-        int priority = -1; // for debug
+        		int priority = -1; // for debug
         for( auto tpr = TagPriorityRanges.begin() ; tpr != TagPriorityRanges.end() ; tpr++ ) {
-            priority += 1; // for debug
+                	priority += 1; // for debug
 
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
             evt.getByToken( TagList_[tpr->collIndex], TagVectorEntry );
@@ -124,8 +124,8 @@ namespace flashgg {
                 int category = TagVectorEntry->ptrAt( TagPointerLoop )->categoryNumber();
                 float centralWeight = TagVectorEntry->ptrAt( TagPointerLoop )->centralWeight();
 
-                std::cout << "[DEBUG]" << tpr->name << " " << tpr->minCat << " " << tpr->maxCat << " "
-                          << mass << " " << category << " " << TagPointerLoop << ", centralValue " << centralWeight <<  std::endl;
+                 std::cout << "[DEBUG]" << tpr->name << " " << tpr->minCat << " " << tpr->maxCat << " "
+                           << mass << " " << category << " " << TagPointerLoop <<", centralValue " << centralWeight<<  std::endl;
 
                 // ignore candidate tags with category number outside the present range we're looking at
                 if( category < tpr->minCat || category > tpr->maxCat ) { continue ; }

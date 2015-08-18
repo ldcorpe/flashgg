@@ -23,7 +23,7 @@ namespace flashgg {
         float sumPt() const { return this->diPhoton()->sumPt() ;}
         bool operator <( const DiPhotonTagBase &b ) const;
         operator int() const { return categoryNumber(); }
-        virtual DiPhotonTagBase *clone() const { std::cout << " DEBUG DEBUG I AM BEING CLONED (DiPhotonTagbase) !" << std::endl; return ( new DiPhotonTagBase( *this ) ); }
+        virtual DiPhotonTagBase *clone() const { std::cout << " DEBUG DEBUG I AM BEING CLONED (DiPhotonTagbase) !" << std::endl;return ( new DiPhotonTagBase( *this ) ); }
         void setCategoryNumber( int value ) { category_number_ = value; }
         int categoryNumber() const { return category_number_; }
         void setTagTruth( const edm::Ptr<TagTruthBase> value ) { truth_ = value; }

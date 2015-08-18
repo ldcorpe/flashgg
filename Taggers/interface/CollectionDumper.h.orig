@@ -273,18 +273,18 @@ namespace flashgg {
         maxCandPerEvent_ = 21;
         int nfilled = maxCandPerEvent_;
 
-        //     for (auto &dumper : dumpers_){
-        //      std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
-        //   }
+    //     for (auto &dumper : dumpers_){
+     //      std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
+     //   }
 
         for( auto &cand : collection ) {
             auto cat = classifier_( cand );
             auto which = dumpers_.find( cat.first );
-            auto count = dumpers_.count( cat.first );
-            if( count == 1 ) {
+                auto count = dumpers_.count( cat.first );
+               if (count==1) { 
                 std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
-                std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
-            }
+                 std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
+               }
 
             if( which != dumpers_.end() ) {
                 // which->second.print();

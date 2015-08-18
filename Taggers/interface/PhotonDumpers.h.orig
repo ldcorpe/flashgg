@@ -20,12 +20,12 @@ namespace flashgg {
     typedef CollectionDumper<std::vector<DiPhotonCandidate>,
             DiPhotonCandidate,
             CutBasedClassifier<DiPhotonCandidate> > CutBasedDiPhotonDumper;
-//   typedef CollectionDumper<std::vector<SinglePhotonView>,
-//           SinglePhotonView,
-//           CutBasedClassifier<SinglePhotonView> > CutBasedSinglePhotonViewDumper;
-//   typedef CollectionDumper<std::vector<SingleVertexView>,
-//           SingleVertexView,
-//           CutBasedClassifier<SingleVertexView> > CutBasedSingleVertexViewDumper;
+ //   typedef CollectionDumper<std::vector<SinglePhotonView>,
+ //           SinglePhotonView,
+ //           CutBasedClassifier<SinglePhotonView> > CutBasedSinglePhotonViewDumper;
+ //   typedef CollectionDumper<std::vector<SingleVertexView>,
+ //           SingleVertexView,
+ //           CutBasedClassifier<SingleVertexView> > CutBasedSingleVertexViewDumper;
     typedef CollectionDumper<edm::OwnVector<DiPhotonTagBase>,
             DiPhotonTagBase,
             ClassNameClassifier<DiPhotonTagBase> > CutBasedDiPhotonTagDumper;

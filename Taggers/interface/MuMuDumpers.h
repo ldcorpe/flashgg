@@ -10,21 +10,21 @@
 
 //namespace flashgg {
 
- //   typedef CollectionDumper<std::vector<DiMuonCandidate> > DiMuonDumper;
-  //  typedef CollectionDumper<std::vector<DiMuonCandidate>,
-   //         DiMuonCandidate,
-  //          CutBasedClassifier<DiMuonCandidate> > CutBasedDiMuonDumper;
+//   typedef CollectionDumper<std::vector<DiMuonCandidate> > DiMuonDumper;
+//  typedef CollectionDumper<std::vector<DiMuonCandidate>,
+//         DiMuonCandidate,
+//          CutBasedClassifier<DiMuonCandidate> > CutBasedDiMuonDumper;
 
- //   typedef CollectionDumper<std::vector<MuMuGammaCandidate> > MuMuGammaDumper;
- //   typedef CollectionDumper<std::vector<MuMuGammaCandidate>,
-  //          MuMuGammaCandidate,
-  //          CutBasedClassifier<MuMuGammaCandidate> > CutBasedMuMuGammaDumper;
+//   typedef CollectionDumper<std::vector<MuMuGammaCandidate> > MuMuGammaDumper;
+//   typedef CollectionDumper<std::vector<MuMuGammaCandidate>,
+//          MuMuGammaCandidate,
+//          CutBasedClassifier<MuMuGammaCandidate> > CutBasedMuMuGammaDumper;
 
-    //// namespace fwlite {
-    //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;
-    //// 	typedef ::fwlite::AnalyzerWrapper<PhotonDumper> PhotonDumper;
-    //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonTagDumper> DiPhotonTagDumper;
-    //// }
+//// namespace fwlite {
+//// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;
+//// 	typedef ::fwlite::AnalyzerWrapper<PhotonDumper> PhotonDumper;
+//// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonTagDumper> DiPhotonTagDumper;
+//// }
 
 //}
 

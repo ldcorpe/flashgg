@@ -5,7 +5,7 @@ using namespace flashgg;
 
 TTHLeptonicTag::TTHLeptonicTag() : DiPhotonTagBase::DiPhotonTagBase()
 {
-    std::cout << "DEBUG DEBUG I AM BEING constructed 1 (TTHLept)  " << std::endl;
+        std::cout << "DEBUG DEBUG I AM BEING constructed 1 (TTHLept)  " << std::endl;
 
 }
 
@@ -14,16 +14,15 @@ TTHLeptonicTag::~TTHLeptonicTag()
 {}
 
 // N.B. Other attributes are set using methods in header file
-TTHLeptonicTag::TTHLeptonicTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares ) : TTHLeptonicTag::TTHLeptonicTag( diPho, *mvares )
-{
+TTHLeptonicTag::TTHLeptonicTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares ) : TTHLeptonicTag::TTHLeptonicTag( diPho, *mvares ) {
 
-    std::cout << "DEBUG DEBUG I AM BEING constructed 2 (TTHLept)  " << std::endl;
+        std::cout << "DEBUG DEBUG I AM BEING constructed 2 (TTHLept)  " << std::endl;
 
 }
-TTHLeptonicTag::TTHLeptonicTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) : DiPhotonTagBase::DiPhotonTagBase( dipho, mvares )
+TTHLeptonicTag::TTHLeptonicTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) : DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) 
 {
 
-    std::cout << "DEBUG DEBUG I AM BEING constructed 3 (TTHLept)  " << std::endl;
+        std::cout << "DEBUG DEBUG I AM BEING constructed 3 (TTHLept)  " << std::endl;
 
 }
 TTHLeptonicTag::TTHLeptonicTag( const TTHLeptonicTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )

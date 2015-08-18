@@ -48,7 +48,7 @@ namespace flashgg {
 
         virtual float operator()( const ObjectT &obj ) const {std::cout << " DEBUG FunctorWrapper::(obj)" << std::endl; return ( *func_ )( obj ); };
 
-        std::shared_ptr<FunctorT> ptr() { std::cout << " DEBUG FunctorWrapper::ptr()" << std::endl; return func_; };
+        std::shared_ptr<FunctorT> ptr() { std::cout << " DEBUG FunctorWrapper::ptr()" << std::endl;return func_; };
 
     private:
         // FunctorT * func_;
@@ -135,7 +135,7 @@ namespace flashgg {
                 functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
                 names_.push_back( name );
                 variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
-                std::cout << "DEBUG categ dumper initialisation, functors_ expr" << expr << ", name " << name << std::endl;
+                std::cout <<"DEBUG categ dumper initialisation, functors_ expr" << expr << ", name " << name << std::endl;
             }
         }
 
@@ -296,19 +296,19 @@ namespace flashgg {
             auto &val = std::get<0>( var );
             std::cout << "DEBUG categoryDumper 2 " << val << std::endl;
             val = ( *std::get<1>( var ) )( obj );
-            // auto f  = functors_[ivar];
-            std ::string expr = "centralWeight";
-            std::vector<functor_type_LC> functorsLC_;
-            functor_type_LC myfunc( expr );
-            float fval0 = myfunc( obj );
+          // auto f  = functors_[ivar];
+           std ::string expr = "centralWeight";
+           std::vector<functor_type_LC> functorsLC_;
+           functor_type_LC myfunc(expr);
+           float fval0 = myfunc(obj);
             std::cout << "DEBUG categoryDumper 3: bypass vector " << expr << ", fval0 " << fval0 << std::endl;
-            functorsLC_.emplace_back( expr );
-            for( auto funcLC : functorsLC_ ) {
-                float test = obj.centralWeight();
-                std::cout << "DEBUG categoryDumper 3: checking for " << expr << ", test " << test << std::endl;
-                float fval = 0.;
-                fval = funcLC( obj );
-                std::cout << "DEBUG categoryDumper 3: val for " << expr << " is " << fval <<   std::endl;
+           functorsLC_.emplace_back(expr);
+           for ( auto funcLC : functorsLC_){
+           float test = obj.centralWeight(); 
+            std::cout << "DEBUG categoryDumper 3: checking for " << expr << ", test " << test << std::endl;
+           float fval = 0.;
+           fval = funcLC ( obj);
+            std::cout << "DEBUG categoryDumper 3: val for " << expr << " is " << fval <<   std::endl;
             }
             if( dataset_ ) {
                 dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );

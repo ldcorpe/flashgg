@@ -5,7 +5,7 @@
 using namespace flashgg;
 
 DiPhotonTagBase::DiPhotonTagBase()
-{
+{   
     std::cout << "DEBUG DEBUG I AM BEING INitialisted (DiPhotonTagBAse) " << std::endl;
     category_number_ = -1;
 }
@@ -40,16 +40,16 @@ bool DiPhotonTagBase::operator <( const DiPhotonTagBase &b ) const
     }
 }
 
-DiPhotonTagBase::DiPhotonTagBase( const DiPhotonTagBase &b ) :
-    WeightedObject::WeightedObject( b )
+DiPhotonTagBase::DiPhotonTagBase( const DiPhotonTagBase &b ) : 
+WeightedObject::WeightedObject( b)
 {
-    std::cout << "DEBUG DEBUG I AM BEING COPY CONSTRUCTED (DiPhotonTagBAse) " << std::endl;
-    setCategoryNumber( b.categoryNumber() );
-    setDiPhotonIndex( b.diPhotonIndex() );
-    setTagTruth( b.tagTruth() );
-    setSystLabel( b.systLabel() );
-    dipho_ = b.dipho_;
-    mva_result_ = b.mva_result_;
+std::cout << "DEBUG DEBUG I AM BEING COPY CONSTRUCTED (DiPhotonTagBAse) " << std::endl;
+setCategoryNumber( b.categoryNumber() );
+setDiPhotonIndex( b.diPhotonIndex() );
+setTagTruth( b.tagTruth() );
+setSystLabel( b.systLabel() );
+dipho_ = b.dipho_;
+mva_result_ = b.mva_result_;
 }
 
 
