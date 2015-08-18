@@ -38,6 +38,7 @@ process.TFileService = cms.Service("TFileService",
 process.extraDumpers = cms.Sequence()
 systlabels = [""]
 counter =0;
+'''
 for r9 in ["HighR9","LowR9"]:
     for direction in ["Up","Down"]:
         systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
@@ -45,7 +46,7 @@ for r9 in ["HighR9","LowR9"]:
             systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
         for region in ["EB","EE"]:
             systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
-
+'''
 process.extraDumpers = cms.Sequence()
 process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 import flashgg.Taggers.dumperConfigTools as cfgTools
@@ -62,7 +63,7 @@ process.diphotonDumper.systLabel = ""
 for systlabel in systlabels:
   cutstring = "hasSyst(\"%s\")"%systlabel
   #print "syst label ", systlabel
-
+  '''
   cfgTools.addCategory(process.diphotonDumper,
                       "flashggUntaggedTag__%s"%systlabel,
                       cutbased=cutstring,
@@ -189,7 +190,7 @@ for systlabel in systlabels:
                                         "subleadJetPt:leadJetPt>>JetptLeadvsSub(8,20,100:18,20,200)",
                                      ]
                       )
-  
+  '''
   cfgTools.addCategory(process.diphotonDumper,
                       "flashggTTHLeptonicTag__%s"%systlabel,
                       cutbased=cutstring,

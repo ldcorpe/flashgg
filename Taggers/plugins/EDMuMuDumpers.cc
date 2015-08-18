@@ -3,7 +3,7 @@
 #include "PhysicsTools/UtilAlgos/interface/EDAnalyzerWrapper.h"
 
 //-----------J. Tao from IHEP-Beijing--------------
-
+/*
 typedef edm::AnalyzerWrapper<flashgg::DiMuonDumper> DiMuonDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedDiMuonDumper> CutBasedDiMuonDumper;
 typedef edm::AnalyzerWrapper<flashgg::MuMuGammaDumper> MuMuGammaDumper;
@@ -13,7 +13,7 @@ DEFINE_FWK_MODULE( DiMuonDumper );
 DEFINE_FWK_MODULE( CutBasedDiMuonDumper );
 DEFINE_FWK_MODULE( MuMuGammaDumper );
 DEFINE_FWK_MODULE( CutBasedMuMuGammaDumper );
-
+*/
 
 // Local Variables:
 // mode:c++

@@ -35,7 +35,7 @@ namespace flashgg {
             auto cutbasedpair = std::make_pair( "NOTFOUND", 0 );
             auto classbasedpair = std::make_pair( "NOTFOUND", 0 );
             int counter = 0;
-            std::cout << " DEBUG mass " <<  obj.diPhoton()->mass() << ", systLabel " << obj.systLabel() << ", cenralWeight " << obj.centralWeight() << std::endl;
+            std::cout << " DEBUG mass " <<  obj.diPhoton()->mass() << ", systLabel " << obj.systLabel() << ", centralWeight " << obj.centralWeight() << std::endl;
             for( auto &cut : cuts_ ) {
                 if( cut.first( obj ) ) {
                     cutbasedpair = std::make_pair( cut.second.c_str(), 0 );
@@ -55,6 +55,7 @@ namespace flashgg {
 
             auto strings = std::make_pair( classbasedpair.first, cutbasedpair.first );
             auto res = std::make_pair( strings, classbasedpair.second );
+            std::cout << " DEBUG mass (v2)" <<  obj.diPhoton()->mass() << ", systLabel " << obj.systLabel() << ", centralWeight " << obj.centralWeight() << std::endl;
             return res;
 
         }

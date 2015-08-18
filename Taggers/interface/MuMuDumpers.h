@@ -8,17 +8,17 @@
 
 //-----------J. Tao from IHEP-Beijing--------------
 
-namespace flashgg {
+//namespace flashgg {
 
-    typedef CollectionDumper<std::vector<DiMuonCandidate> > DiMuonDumper;
-    typedef CollectionDumper<std::vector<DiMuonCandidate>,
-            DiMuonCandidate,
-            CutBasedClassifier<DiMuonCandidate> > CutBasedDiMuonDumper;
+ //   typedef CollectionDumper<std::vector<DiMuonCandidate> > DiMuonDumper;
+  //  typedef CollectionDumper<std::vector<DiMuonCandidate>,
+   //         DiMuonCandidate,
+  //          CutBasedClassifier<DiMuonCandidate> > CutBasedDiMuonDumper;
 
-    typedef CollectionDumper<std::vector<MuMuGammaCandidate> > MuMuGammaDumper;
-    typedef CollectionDumper<std::vector<MuMuGammaCandidate>,
-            MuMuGammaCandidate,
-            CutBasedClassifier<MuMuGammaCandidate> > CutBasedMuMuGammaDumper;
+ //   typedef CollectionDumper<std::vector<MuMuGammaCandidate> > MuMuGammaDumper;
+ //   typedef CollectionDumper<std::vector<MuMuGammaCandidate>,
+  //          MuMuGammaCandidate,
+  //          CutBasedClassifier<MuMuGammaCandidate> > CutBasedMuMuGammaDumper;
 
     //// namespace fwlite {
     //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;
@@ -26,7 +26,7 @@ namespace flashgg {
     //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonTagDumper> DiPhotonTagDumper;
     //// }
 
-}
+//}
 
 #endif
 

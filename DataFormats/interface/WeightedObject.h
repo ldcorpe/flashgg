@@ -14,9 +14,23 @@ namespace flashgg {
 
     public:
         float weight( string key ) const;
-        float centralWeight() const { 
-        std::cout << "DEBUG size of labels " << _labels.size() << ", size of _weights " << _weights.size() << std::endl;
-        return weight( central_key ); 
+        float centralWeight() const
+        {
+            std::cout << "DEBUG size of labels " << _labels.size() << ", size of _weights " << _weights.size() << std::endl;
+         //   for (auto label : _labels){
+        //    std::cout << "DEBUG  labels " << label <<  std::endl;
+        //    }
+        //    for (auto w : _weights){
+         //   std::cout << "DEBUG  weights " << w <<  std::endl;
+         //   }
+            //return weight( central_key );
+            return 99.99;
+
+        }
+        float louieTest() const
+        {
+            return 99.99;
+
         }
         void setWeight( string key, float val );
         void setCentralWeight( float val ) { setWeight( central_key, val ); }

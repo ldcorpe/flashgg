@@ -503,6 +503,7 @@ namespace flashgg {
                 tthltags_obj.setElectrons( tagElectrons );
                 tthltags_obj.setDiPhotonIndex( diphoIndex );
                 tthltags_obj.setSystLabel( systLabel_ );
+                std::cout << " DEBUG TTHLEPTONIC PRODUCER check labels and weights - centralWeight " << tthltags_obj.centralWeight() << std::endl;
                 tthltags->push_back( tthltags_obj );
                 TagTruthBase truth_obj;
                 if( ! evt.isRealData() ) {

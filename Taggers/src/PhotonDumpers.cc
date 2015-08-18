@@ -2,7 +2,7 @@
 
 #include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 
-namespace flashgg {
+/*namespace flashgg {
     // typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;
     namespace fwlite {
         PLUGGABLE_ANALYZER( PhotonDumper );
@@ -13,7 +13,7 @@ namespace flashgg {
         PLUGGABLE_ANALYZER( CutBasedSingleVertexViewDumper );
         PLUGGABLE_ANALYZER( DiPhotonTagDumper );
     }
-}
+}*/
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

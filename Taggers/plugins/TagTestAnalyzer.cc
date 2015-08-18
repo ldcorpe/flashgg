@@ -176,6 +176,7 @@ namespace flashgg {
                 std::cout << "[TTHleptonic] Category " << tthleptonictag->categoryNumber()
                           << " nelectrons=" << tthleptonictag->electrons().size()
                           << " nmuons=" << tthleptonictag->muons().size()
+                          << " centralWeight" <<  tthleptonictag->centralWeight()
                           << std::endl;
             }
 

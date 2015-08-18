@@ -4,6 +4,9 @@ namespace flashgg {
 
     void WeightedObject::setWeight( string key, float val )
     {
+    std::cout << "DEBUG WeightedObject::setWeight START, contents labels (" << _labels.size() <<"), weights ("<< _weights.size() <<"()" << std::endl; 
+            for (auto label : _labels){ std::cout << ">> DEBUG  labels " << label <<  std::endl;}
+            for (auto w : _weights){std::cout << "DEBUG  weights " << w <<  std::endl; }
         auto found_label = std::lower_bound( _labels.begin(), _labels.end(), key );
         if( found_label == _labels.end() || *found_label != key ) {
             _weights.insert( _weights.begin() + std::distance( _labels.begin(), found_label ), val );
@@ -11,6 +14,11 @@ namespace flashgg {
         } else {
             _weights[std::distance( _labels.begin(), found_label )] = val;
         }
+    
+    std::cout << "DEBUG WeightedObject::setWeight END, contents labels (" << _labels.size() <<"), weights ("<< _weights.size() <<"()" << std::endl; 
+            for (auto label : _labels){ std::cout << ">> DEBUG  labels " << label <<  std::endl;}
+            for (auto w : _weights){std::cout << "DEBUG  weights " << w <<  std::endl; }
+
     }
 
 

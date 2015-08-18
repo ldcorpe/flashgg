@@ -273,22 +273,26 @@ namespace flashgg {
         maxCandPerEvent_ = 21;
         int nfilled = maxCandPerEvent_;
 
-        // for (auto &dumper : dumpers_){
-        //   std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
-        //}
+    //     for (auto &dumper : dumpers_){
+     //      std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
+     //   }
 
         for( auto &cand : collection ) {
             auto cat = classifier_( cand );
             auto which = dumpers_.find( cat.first );
-            //    std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
-            //    auto count = dumpers_.count( cat.first );
-            //    std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
+                auto count = dumpers_.count( cat.first );
+               if (count==1) { 
+                std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
+                 std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
+               }
 
             if( which != dumpers_.end() ) {
                 // which->second.print();
                 int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
                 // FIXME per-candidate weights
+                std::cout << "DEBUG CollDumper before fill " << std::endl;
                 which->second[isub].fill( cand, weight_, maxCandPerEvent_ - nfilled );
+                std::cout << "DEBUG CollDumper after fill " << std::endl;
                 --nfilled;
                 //   which++;
             }

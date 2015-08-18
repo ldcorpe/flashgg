@@ -213,6 +213,7 @@ namespace flashgg {
                 for( const auto &sig : sigmas_.at( ncorr ) ) {
                     float weightAdjust = ( Corrections_.at( ncorr )->makeWeight( y, sig ) / Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) );
                     std::string label = Corrections_.at( ncorr )->shiftLabel( sig );
+                    std::cout << "DEBUG ObjSystProd centralWeight" << y.centralWeight() << std::endl;
                     y.setWeight( label, weightAdjust * y.centralWeight() );
                     std::cout << " Applying 1d non-central weight " << label << " of " << y.weight( label ) << " - pt eta " << y.pt() << " " << y.eta() << std::endl;
                 }
@@ -223,6 +224,7 @@ namespace flashgg {
                 for( const auto &sig : sigmas2D_.at( ncorr ) ) {
                     float weightAdjust = ( Corrections2D_.at( ncorr )->makeWeight( y, sig ) / Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO ) );
                     std::string label = Corrections2D_.at( ncorr )->shiftLabel( sig );
+                    std::cout << "DEBUG ObjSystProd centralWeight" << y.centralWeight() << std::endl;
                     y.setWeight( label, weightAdjust * y.centralWeight() );
                     std::cout << " Applying 2d non-central weight " << label << " of " << y.weight( label ) << " - pt eta " << y.pt() << " " << y.eta() << std::endl;
                 }
@@ -267,7 +269,9 @@ namespace flashgg {
             flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
             ApplyCorrections( obj, nullptr, param_var( 0 ) );
             ApplyNonCentralWeights( obj );
+            std::cout << "DEBUG loop in produce method, obj  "<< i <<", centralWeight " << obj.centralWeight() << std::endl;
             centralObjectColl->push_back( obj );
+
         }
         evt.put( centralObjectColl ); // put central collection in event
 
@@ -279,15 +283,21 @@ namespace flashgg {
         // Problem: vector<auto_ptr> is not allowed
         // Possible alternate solutions: map, multimap, vector<unique_ptr> + std::move ??
         std::auto_ptr<std::vector<flashgg_object> > *all_shifted_collections;
+            std::cout << "DEBUG LC 1"<< std::endl;
         unsigned int total_shifted_collections = collectionLabelsNonCentral_.size();
         all_shifted_collections = new std::auto_ptr<std::vector<flashgg_object> >[total_shifted_collections];
+            std::cout << "DEBUG LC 2"<< std::endl;
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
             all_shifted_collections[ncoll].reset( new std::vector<flashgg_object> );
         }
+            std::cout << "DEBUG LC 3"<< std::endl;
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             unsigned int ncoll = 0;
+            std::cout << "DEBUG LC 3.1"<< std::endl;
             for( unsigned int ncorr = 0 ; ncorr < Corrections_.size() ; ncorr++ ) {
+            std::cout << "DEBUG LC 3.1.1"<< std::endl;
                 for( const auto &sig : sigmas_.at( ncorr ) ) {
+            std::cout << "DEBUG LC 3.1.1.1"<< std::endl;
                     //                    std::cout << i << " " << ncoll << " " << sig << std::endl;
                     if( !Corrections_.at( ncorr )->makesWeight() ) {
                         flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
@@ -297,8 +307,11 @@ namespace flashgg {
                     }
                 }
             }
+            std::cout << "DEBUG LC 3.2"<< std::endl;
             for( unsigned int ncorr = 0 ; ncorr < Corrections2D_.size() ; ncorr++ ) {
+            std::cout << "DEBUG LC 3.2.1"<< std::endl;
                 for( const auto &sig : sigmas2D_.at( ncorr ) ) {
+            std::cout << "DEBUG LC 3.2.1.1"<< std::endl;
                     //                    std::cout << i << " " << ncoll << " " << sig.first << " " << sig.second << std::endl;
                     if( !Corrections_.at( ncorr )->makesWeight() ) {
                         flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
@@ -309,11 +322,14 @@ namespace flashgg {
                 }
             }
         }
+            std::cout << "DEBUG LC 4"<< std::endl;
 
         // Put shifted collections in event
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
+            std::cout << "DEBUG LC 4.1"<< std::endl;
             evt.put( all_shifted_collections[ncoll], collectionLabelsNonCentral_[ncoll] );
         }
+            std::cout << "DEBUG LC 5"<< std::endl;
 
         // See note above about array of auto_ptr
         delete[] all_shifted_collections;

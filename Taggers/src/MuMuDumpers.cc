@@ -3,7 +3,7 @@
 #include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 
 //-----------J. Tao from IHEP-Beijing--------------
-
+/*
 namespace flashgg {
     // typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;
     namespace fwlite {
@@ -13,7 +13,7 @@ namespace flashgg {
         PLUGGABLE_ANALYZER( CutBasedMuMuGammaDumper );
     }
 }
-
+*/
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

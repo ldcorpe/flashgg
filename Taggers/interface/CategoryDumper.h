@@ -18,12 +18,13 @@
 
 #include "flashgg/Taggers/interface/StringHelpers.h"
 
-#include "CommonTools/Utils/interface/StringObjectFunction.h"
-#include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+//#include "CommonTools/Utils/interface/StringObjectFunction.h"
+//#include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 #include "flashgg/MicroAOD/interface/MVAComputer.h"
 #include "flashgg/MicroAOD/interface/StepWiseFunctor.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
 namespace flashgg {
 
@@ -41,13 +42,13 @@ namespace flashgg {
 
     public:
         FunctorWrapper( FunctorT *func = 0 ) // : std::unique_ptr<FunctorT>(func) {};
-            : func_( func ) {};
+            : func_( func ) {std::cout << " DEBUG FunctorWrapper::()" << std::endl;};
 
-        virtual ~FunctorWrapper() {} ; //delete func_; };
+        virtual ~FunctorWrapper() {std::cout << " DEBUG FunctorWrapper:Destructor" << std::endl;} ; //delete func_; };
 
-        virtual float operator()( const ObjectT &obj ) const { return ( *func_ )( obj ); };
+        virtual float operator()( const ObjectT &obj ) const {std::cout << " DEBUG FunctorWrapper::(obj)" << std::endl; return ( *func_ )( obj ); };
 
-        std::shared_ptr<FunctorT> ptr() { return func_; };
+        std::shared_ptr<FunctorT> ptr() { std::cout << " DEBUG FunctorWrapper::ptr()" << std::endl;return func_; };
 
     private:
         // FunctorT * func_;
@@ -68,6 +69,7 @@ namespace flashgg {
         typedef FunctorWrapper<object_type, functor_type> wrapped_functor_type;
         typedef FunctorWrapper<object_type, stepwise_functor_type> wrapped_stepwise_functor_type;
         typedef FunctorWrapper<object_type, mva_type> wrapped_mva_type;
+        typedef StringObjectFunction<object_type> functor_type_LC;
 
         CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper = 0 );
         ~CategoryDumper();
@@ -133,6 +135,7 @@ namespace flashgg {
                 functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
                 names_.push_back( name );
                 variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
+                std::cout <<"DEBUG categ dumper initialisation, functors_ expr" << expr << ", name " << name << std::endl;
             }
         }
 
@@ -287,9 +290,26 @@ namespace flashgg {
         // for( auto & var : variables_ ) {
         for( size_t ivar = 0; ivar < names_.size(); ++ivar ) {
             auto name = names_[ivar].c_str();
+            std::cout << "DEBUG categoryDumper 0 " << name << std::endl;
             auto &var = variables_[ivar];
+            std::cout << "DEBUG categoryDumper 1 " <<  std::endl;
             auto &val = std::get<0>( var );
+            std::cout << "DEBUG categoryDumper 2 " << val << std::endl;
             val = ( *std::get<1>( var ) )( obj );
+          // auto f  = functors_[ivar];
+           std ::string expr = "centralWeight";
+           std::vector<functor_type_LC> functorsLC_;
+           functor_type_LC myfunc(expr);
+           float fval0 = myfunc(obj);
+            std::cout << "DEBUG categoryDumper 3: bypass vector " << expr << ", fval0 " << fval0 << std::endl;
+           functorsLC_.emplace_back(expr);
+           for ( auto funcLC : functorsLC_){
+           float test = obj.centralWeight(); 
+            std::cout << "DEBUG categoryDumper 3: checking for " << expr << ", test " << test << std::endl;
+           float fval = 0.;
+           fval = funcLC ( obj);
+            std::cout << "DEBUG categoryDumper 3: val for " << expr << " is " << fval <<   std::endl;
+            }
             if( dataset_ ) {
                 dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );
             }
